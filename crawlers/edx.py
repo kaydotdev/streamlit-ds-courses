@@ -21,10 +21,7 @@ native_logger.setLevel(logging.INFO)
 native_logger.addHandler(logging.StreamHandler(sys.stdout))
 
 native_logger.info("[Driver] Initiating driver")
-
 driver = webdriver.Chrome(os.environ['CHROME_DRIVER'])
-# driver.maximize_window()
-
 native_logger.info("[Driver] Driver is ready")
 
 
