@@ -1,4 +1,7 @@
 import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
 import streamlit as st
 import pandas as pd
 
@@ -10,7 +13,7 @@ st.set_page_config(
    page_icon=":notebook_with_decorative_cover:", layout="centered", initial_sidebar_state="expanded"
 )
 
-add_selectbox = st.sidebar.selectbox(
+contents_selectbox = st.sidebar.selectbox(
     "Table of Contents",
     ("Introduction", "Which platforms suitable for the level",
      "What depends on the course rating", "Conclusions")
@@ -70,7 +73,7 @@ Dashboard
 
 """
 
-if add_selectbox == "Introduction":
+if contents_selectbox == "Introduction":
     st.title("Which DS online course to take first?")
     st.markdown(dashboard_description)
 
@@ -83,7 +86,10 @@ if add_selectbox == "Introduction":
         st.dataframe(dataframe)
 
     st.subheader("Missing values")
-    st.markdown("Some insights on how many records available per each column.")
+    st.markdown("""
+Some insights on how many records available per each column. Platforms with *small set* of courses 
+usually **do not provide** additional information about course, like: enrolled students count, lectures durations, e.t.c.
+""")
 
     valid_columns = dataframe.count().to_frame(name="valid_records")
 
@@ -99,13 +105,37 @@ if add_selectbox == "Introduction":
     st.plotly_chart(fig)
 
 
-elif add_selectbox == "Which platforms suitable for the level":
+elif contents_selectbox == "Which platforms suitable for the level":
     st.title("Which platform is more suitable for a specific level?")
+    st.markdown("""
+The Data Science field is not a **"buzzword"** anymore, nevertheless there are still cases when people switch jobs to become Data Scientists. 
+So it's reasonable to assume that majority of the courses is dedicated to the Beginners, which is true according to the difficulty level distribution of the data:
+""")
 
-elif add_selectbox == "What depends on the course rating":
+    platforms_to_group = st.multiselect('Group the smallest platforms into a general group',
+        ["Stepik", "Alison", "FutureLearn", "Pluralsight", "edX"],
+        ["Stepik", "Alison", "FutureLearn", "Pluralsight"])
+
+    fig = make_subplots(rows=1, cols=3, specs=[[{'type':'domain'}, {'type':'domain'}, {'type':'domain'}]])
+    quantitative_features = ["level", "platform", "free"]
+    dataframe_quantitative = dataframe.replace(to_replace=platforms_to_group, value='Other')
+
+    for i, feature in enumerate(quantitative_features):
+        df_feature = dataframe_quantitative[feature].value_counts().to_frame()
+        df_feature.reset_index(inplace=True)
+        df_feature = df_feature.sort_values(feature, ascending=False)
+
+        fig.add_trace(go.Pie(labels=df_feature["index"], values=df_feature[feature], name=f"Comparing ratios of '{feature}'"), 1, i + 1)
+
+    fig.update_traces(hole=.4, hoverinfo="label+percent+name")
+    fig.update_layout(title_text="Values ratio between quantitative features")
+
+    st.plotly_chart(fig)
+
+elif contents_selectbox == "What depends on the course rating":
     st.title("What depends on the course rating?")
 
-elif add_selectbox == "Conclusions":
+elif contents_selectbox == "Conclusions":
     st.title("Conclusions")
 
     st.subheader("EDA Insights")
