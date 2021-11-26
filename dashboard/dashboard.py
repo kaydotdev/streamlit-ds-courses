@@ -4,7 +4,7 @@ from PIL import Image
 
 st.set_page_config(
    page_title="[EDA] Online Data Science Courses",
-   page_icon=":notebook_with_decorative_cover:", layout="wide", initial_sidebar_state="expanded"
+   page_icon=":notebook_with_decorative_cover:", layout="centered", initial_sidebar_state="expanded"
 )
 
 add_selectbox = st.sidebar.selectbox(
@@ -34,6 +34,15 @@ From each platform were queried courses only related to the "Data Science" topic
 
 """
 
+dashboard_insights = """
+ 1. The majority of the Data Science courses are dedicated to Beginners;
+ 2. The most common keywords in Data Science courses are: `Python`, `Machine learning`, `Data`, `R`, `Deep Learning`, `Statistics`, `TensorFlow` e.t.c.;
+ 3. `Udemy` is the most suitable platform for Beginners and General level students, and `Coursera` - for Intermediate and Expert;
+ 4. Among platforms with the most significant amount of content, `Coursera` has the highest average rating;
+ 5. Top tech organizations that have the highest average rating are `SAS`, `DeepLearning.AI`, `IBM`, and top educational organizations are `The University of Michigan`, `University of California`, `Johns Hopkins University`;
+ 6. The rating of the course may indeed depend on whether it is free or not;
+"""
+
 if add_selectbox == "Introduction":
     image = Image.open("static/nick-morrison.jpg")
     st.title("Which DS online course to take first?")
@@ -49,3 +58,4 @@ elif add_selectbox == "What depends on the course rating":
 
 elif add_selectbox == "Insights":
     st.title("EDA Insights")
+    st.markdown(dashboard_insights)
