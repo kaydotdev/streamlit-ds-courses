@@ -1,6 +1,8 @@
 import streamlit as st
-from PIL import Image
+import pandas as pd
 
+
+dataframe = pd.read_csv("data/dataframe.csv", index_col=0)
 
 st.set_page_config(
    page_title="[EDA] Online Data Science Courses",
@@ -14,8 +16,6 @@ add_selectbox = st.sidebar.selectbox(
 )
 
 dashboard_description = """
-*[Image by Nick Morrison from unsplash.com](https://unsplash.com/photos/FHnnjk1Yj7Y)*
-
 ### Context
 
 Nowadays, online educational platforms provide a vast amount of online courses. 
@@ -44,11 +44,16 @@ dashboard_insights = """
 """
 
 if add_selectbox == "Introduction":
-    image = Image.open("static/nick-morrison.jpg")
     st.title("Which DS online course to take first?")
-
-    st.image(image)
     st.markdown(dashboard_description)
+
+    st.subheader("Data preview")
+    st.markdown("Structure of the collected data.")
+
+    if st.checkbox('Display only head', value=True):
+        st.dataframe(dataframe.head())
+    else:
+        st.dataframe(dataframe)
 
 elif add_selectbox == "Which platforms suitable for the level":
     st.title("Which platform is more suitable for a specific level?")
