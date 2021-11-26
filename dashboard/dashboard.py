@@ -16,6 +16,9 @@ add_selectbox = st.sidebar.selectbox(
 )
 
 dashboard_description = """
+[![Source Code](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/antonAce/data-science-courses)
+[![Made with StreamLit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)]()
+
 ### Context
 
 Nowadays, online educational platforms provide a vast amount of online courses. 
