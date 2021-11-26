@@ -13,11 +13,12 @@ st.set_page_config(
 add_selectbox = st.sidebar.selectbox(
     "Table of Contents",
     ("Introduction", "Which platforms suitable for the level",
-     "What depends on the course rating", "Insights")
+     "What depends on the course rating", "Conclusions")
 )
 
 dashboard_description = """
 [![Source Code](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/antonAce/data-science-courses)
+[![Kaggle notebook](https://img.shields.io/badge/Kaggle-20BEFF?style=for-the-badge&logo=Kaggle&logoColor=white)](https://www.kaggle.com/antonkozyriev/which-ds-online-course-to-take-first)
 [![Made with StreamLit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)]()
 
 ### Context
@@ -47,6 +48,28 @@ dashboard_insights = """
  6. The rating of the course may indeed depend on whether it is free or not;
 """
 
+dashboard_techstack = """
+Webcrawlers
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Selenium](https://img.shields.io/badge/Selenium-43B02A?style=for-the-badge&logo=Selenium&logoColor=white)
+![Zyte](https://img.shields.io/badge/Zyte-E10098?style=for-the-badge&logoColor=white)
+![Scrapy+Splash](https://img.shields.io/badge/Scrapy+Splash-60a839?&style=for-the-badge&logoColor=white)
+
+Processing pipelines
+
+![Conda](https://img.shields.io/badge/conda-342B029.svg?&style=for-the-badge&logo=anaconda&logoColor=white)
+![Jupyter](https://img.shields.io/badge/Jupyter-F37626.svg?&style=for-the-badge&logo=Jupyter&logoColor=white)
+![Apache Spark](https://img.shields.io/badge/Apache_Spark-FFFFFF?style=for-the-badge&logo=apachespark&logoColor=#E35A16)
+
+Dashboard
+
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)
+![Plotly](https://img.shields.io/badge/Plotly-239120?style=for-the-badge&logo=plotly&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-2C2D72?style=for-the-badge&logo=pandas&logoColor=white)
+
+"""
+
 if add_selectbox == "Introduction":
     st.title("Which DS online course to take first?")
     st.markdown(dashboard_description)
@@ -54,7 +77,7 @@ if add_selectbox == "Introduction":
     st.subheader("Data preview")
     st.markdown("Structure of the collected data.")
 
-    if st.checkbox('Display only head', value=True):
+    if st.checkbox("Display head only", value=True):
         st.dataframe(dataframe.head())
     else:
         st.dataframe(dataframe)
@@ -82,6 +105,11 @@ elif add_selectbox == "Which platforms suitable for the level":
 elif add_selectbox == "What depends on the course rating":
     st.title("What depends on the course rating?")
 
-elif add_selectbox == "Insights":
-    st.title("EDA Insights")
+elif add_selectbox == "Conclusions":
+    st.title("Conclusions")
+
+    st.subheader("EDA Insights")
     st.markdown(dashboard_insights)
+
+    st.subheader("Techstack")
+    st.markdown(dashboard_techstack)
