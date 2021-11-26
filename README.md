@@ -1,5 +1,7 @@
 # Online Data Science Courses
 
+[![Made with StreamLit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)]()
+
 All source code for [Data Science Courses](https://www.kaggle.com/antonkozyriev/online-data-science-courses) project on Kaggle platform including webcrawlers, preprocessing pipelines and EDA notebooks.
 
 ### Context
