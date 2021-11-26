@@ -1,3 +1,4 @@
+import plotly.express as px
 import streamlit as st
 import pandas as pd
 
@@ -57,6 +58,23 @@ if add_selectbox == "Introduction":
         st.dataframe(dataframe.head())
     else:
         st.dataframe(dataframe)
+
+    st.subheader("Missing values")
+    st.markdown("Some insights on how many records available per each column.")
+
+    valid_columns = dataframe.count().to_frame(name="valid_records")
+
+    valid_columns = valid_columns.sort_values("valid_records")
+    valid_columns.reset_index(inplace=True)
+    valid_columns = valid_columns.rename(columns={
+        "index": "Column",
+        "valid_records": "Valid records count"
+    })
+    fig = px.bar(valid_columns, x="Valid records count", y="Column", color="Column",
+                 color_discrete_sequence=px.colors.diverging.Spectral, orientation="h")
+
+    st.plotly_chart(fig)
+
 
 elif add_selectbox == "Which platforms suitable for the level":
     st.title("Which platform is more suitable for a specific level?")
