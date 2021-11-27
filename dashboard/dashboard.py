@@ -111,7 +111,7 @@ if contents_selectbox == "Introduction":
     fig = px.bar(valid_columns, x="Valid records count", y="Column", color="Column",
                  color_discrete_sequence=px.colors.diverging.Spectral, orientation="h")
 
-    st.plotly_chart(fig)
+    st.plotly_chart(fig, use_container_width=True)
 
 elif contents_selectbox == "Which platforms suitable for the level":
     st.title("Which platform is more suitable for a specific level?")
@@ -123,7 +123,7 @@ elif contents_selectbox == "Which platforms suitable for the level":
     df_feature_level = count_values_for_feature(dataframe, "level")
     fig_level = px.pie(df_feature_level, values='level', names='index', hole=.3, color_discrete_sequence=px.colors.diverging.Spectral)
     fig_level.update_layout(title_text="Most common difficulty level")
-    st.plotly_chart(fig_level)
+    st.plotly_chart(fig_level, use_container_width=True)
 
     st.markdown("""
         Overviewed educational platforms are the most popular among existing on the Internet. Here is shown which platforms provide more content than others.
@@ -137,7 +137,7 @@ elif contents_selectbox == "Which platforms suitable for the level":
     df_feature_platform = count_values_for_feature(dataframe_quantitative, "platform")
     fig_platform = px.pie(df_feature_platform, values='platform', names='index', hole=.3, color_discrete_sequence=px.colors.diverging.Spectral)
     fig_platform.update_layout(title_text="Amount of content of educational platforms")
-    st.plotly_chart(fig_platform)
+    st.plotly_chart(fig_platform, use_container_width=True)
 
     st.markdown("""
         Third-party commercial organizations publish most of the courses (like IBM, DeepLearning.AI, e.t.c.), so, as expected, the more significant part of the courses is paid.
@@ -147,7 +147,7 @@ elif contents_selectbox == "Which platforms suitable for the level":
     df_feature_free = df_feature_free.replace({True: "Free", False: "Paid"})
     fig_free = px.pie(df_feature_free, values='free', names='index', hole=.3, color_discrete_sequence=px.colors.diverging.Spectral)
     fig_free.update_layout(title_text="Free/Paid courses ratio")
-    st.plotly_chart(fig_free)
+    st.plotly_chart(fig_free, use_container_width=True)
 
 elif contents_selectbox == "What depends on the course rating":
     st.title("What depends on the course rating?")
