@@ -1,6 +1,5 @@
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 import streamlit as st
 import pandas as pd
@@ -148,6 +147,27 @@ elif contents_selectbox == "Which platforms suitable for the level":
     fig_free = px.pie(df_feature_free, values='free', names='index', hole=.3, color_discrete_sequence=px.colors.diverging.Spectral)
     fig_free.update_layout(title_text="Free/Paid courses ratio")
     st.plotly_chart(fig_free, use_container_width=True)
+
+    st.markdown(f"""
+        The **Beginner** level is the level of most courses, dedicated for students who only started their Data Science journey or for learners who want to try themselves in another field of activity. 
+        **Udemy** platform offers the greatest amount of courses for **Beginner** and **General** levels, which are the most suitable levels for the learners' group mentioned above. 
+        For more experienced learners, **Coursera** is a better choice in terms of content variety for **Intermediate** and **Advanced** levels.
+    """)
+
+    dataframe_difficulty = dataframe.groupby(['platform', 'level']).size().reset_index(name='counts')
+    dataframe_levels = dataframe_difficulty['level'].unique()
+
+    fig = go.Figure(data=[
+        go.Bar(
+            name=level,
+            marker_color=color,
+            x=dataframe_difficulty[dataframe_difficulty.level == level]["platform"],
+            y=dataframe_difficulty[dataframe_difficulty.level == level]["counts"])
+        for level, color in zip(dataframe_levels, px.colors.diverging.Spectral_r[:len(dataframe_levels)])
+    ])
+
+    fig.update_layout(barmode='group')
+    st.plotly_chart(fig, use_container_width=True)
 
 elif contents_selectbox == "What depends on the course rating":
     st.title("What depends on the course rating?")
