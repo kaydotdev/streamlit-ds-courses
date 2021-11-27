@@ -73,6 +73,15 @@ Dashboard
 
 """
 
+
+def count_values_for_feature(df: pd.DataFrame, feature_name: str):
+    df_feature = df[feature_name].value_counts().to_frame()
+    df_feature.reset_index(inplace=True)
+    df_feature = df_feature.sort_values(feature_name, ascending=False)
+
+    return df_feature
+
+
 if contents_selectbox == "Introduction":
     st.title("Which DS online course to take first?")
     st.markdown(dashboard_description)
@@ -87,9 +96,9 @@ if contents_selectbox == "Introduction":
 
     st.subheader("Missing values")
     st.markdown("""
-Some insights on how many records available per each column. Platforms with *small set* of courses 
-usually **do not provide** additional information about course, like: enrolled students count, lectures durations, e.t.c.
-""")
+        Some insights on how many records available per each column. Platforms with *small set* of courses 
+        usually **do not provide** additional information about course, like: enrolled students count, lectures durations, e.t.c.
+    """)
 
     valid_columns = dataframe.count().to_frame(name="valid_records")
 
@@ -104,33 +113,41 @@ usually **do not provide** additional information about course, like: enrolled s
 
     st.plotly_chart(fig)
 
-
 elif contents_selectbox == "Which platforms suitable for the level":
     st.title("Which platform is more suitable for a specific level?")
-    st.markdown("""
-The Data Science field is not a **"buzzword"** anymore, nevertheless there are still cases when people switch jobs to become Data Scientists. 
-So it's reasonable to assume that majority of the courses is dedicated to the Beginners, which is true according to the difficulty level distribution of the data:
-""")
 
-    platforms_to_group = st.multiselect('Group the smallest platforms into a general group',
+    st.markdown("""
+        The Data Science field is not a **"buzzword"** anymore, nevertheless there are still cases when people switch jobs to become Data Scientists. 
+        So it's reasonable to assume that majority of the courses is dedicated to the Beginners, which is true according to the difficulty level distribution of the data.
+    """)
+    df_feature_level = count_values_for_feature(dataframe, "level")
+    fig_level = px.pie(df_feature_level, values='level', names='index', hole=.3, color_discrete_sequence=px.colors.diverging.Spectral)
+    fig_level.update_layout(title_text="Most common difficulty level")
+    st.plotly_chart(fig_level)
+
+    st.markdown("""
+        Overviewed educational platforms are the most popular among existing on the Internet. Here is shown which platforms provide more content than others.
+    """)
+    platforms_to_group = st.multiselect('Merge the smallest platforms into a general group',
         ["Stepik", "Alison", "FutureLearn", "Pluralsight", "edX"],
         ["Stepik", "Alison", "FutureLearn", "Pluralsight"])
 
-    fig = make_subplots(rows=1, cols=3, specs=[[{'type':'domain'}, {'type':'domain'}, {'type':'domain'}]])
-    quantitative_features = ["level", "platform", "free"]
     dataframe_quantitative = dataframe.replace(to_replace=platforms_to_group, value='Other')
 
-    for i, feature in enumerate(quantitative_features):
-        df_feature = dataframe_quantitative[feature].value_counts().to_frame()
-        df_feature.reset_index(inplace=True)
-        df_feature = df_feature.sort_values(feature, ascending=False)
+    df_feature_platform = count_values_for_feature(dataframe_quantitative, "platform")
+    fig_platform = px.pie(df_feature_platform, values='platform', names='index', hole=.3, color_discrete_sequence=px.colors.diverging.Spectral)
+    fig_platform.update_layout(title_text="Amount of content of educational platforms")
+    st.plotly_chart(fig_platform)
 
-        fig.add_trace(go.Pie(labels=df_feature["index"], values=df_feature[feature], name=f"Comparing ratios of '{feature}'"), 1, i + 1)
+    st.markdown("""
+        Third-party commercial organizations publish most of the courses (like IBM, DeepLearning.AI, e.t.c.), so, as expected, the more significant part of the courses is paid.
+    """)
 
-    fig.update_traces(hole=.4, hoverinfo="label+percent+name")
-    fig.update_layout(title_text="Values ratio between quantitative features")
-
-    st.plotly_chart(fig)
+    df_feature_free = count_values_for_feature(dataframe, "free")
+    df_feature_free = df_feature_free.replace({True: "Free", False: "Paid"})
+    fig_free = px.pie(df_feature_free, values='free', names='index', hole=.3, color_discrete_sequence=px.colors.diverging.Spectral)
+    fig_free.update_layout(title_text="Free/Paid courses ratio")
+    st.plotly_chart(fig_free)
 
 elif contents_selectbox == "What depends on the course rating":
     st.title("What depends on the course rating?")
