@@ -1,13 +1,19 @@
+import stylecloud
+
 import plotly.express as px
 import plotly.graph_objects as go
 
 import streamlit as st
 import pandas as pd
 
-
+from preprocessing import text_preprocessing
 from static import *
 
+from os import listdir
+from os.path import isfile, join
 
+
+wordcloud_folder_name = "wordcloud"
 dataframe = pd.read_csv("data/dataframe.csv", index_col=0)
 
 st.set_page_config(
@@ -139,6 +145,18 @@ elif contents_selectbox == "What depends on the course rating":
     fig.update_layout(title_text="Amount of content of educational platforms")
     st.plotly_chart(fig, use_container_width=True)
 
+    st.markdown("[TODO] Plot keywords set for each rating category.")
+
+    wordcloud_files = sorted([f for f in listdir(wordcloud_folder_name)
+                              if isfile(join(wordcloud_folder_name, f))])
+
+    cols = st.columns(len(wordcloud_files))
+
+    for i, row in enumerate(zip(cols, wordcloud_files)):
+        col, file = row
+
+        with col:
+            st.image(f"{wordcloud_folder_name}/{file}", use_column_width=True, caption=f"{i+1}-star keywords")
 
 elif contents_selectbox == "Conclusions":
     st.title("Conclusions")
