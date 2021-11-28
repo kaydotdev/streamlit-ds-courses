@@ -171,6 +171,25 @@ elif contents_selectbox == "Which platforms suitable for the level":
 
 elif contents_selectbox == "What depends on the course rating":
     st.title("What depends on the course rating?")
+    st.markdown("[TODO] Rating distribution over platforms.")
+
+    corrected_rating = dataframe[(dataframe.rating > 0.0) & (dataframe.rating is not None)]
+    dataframe_platforms = corrected_rating['platform'].unique()
+    fig = go.Figure()
+
+    for platform, color in zip(dataframe_platforms, px.colors.diverging.Spectral[:len(dataframe_platforms)]):
+        fig.add_trace(go.Box(
+            y=corrected_rating[corrected_rating.platform == platform]["rating"], 
+            fillcolor=color,
+            marker=dict(
+                size=2,
+                color='rgb(0, 0, 0)'
+            ),
+            line=dict(width=1)))
+
+    fig.update_layout(title_text="Amount of content of educational platforms")
+    st.plotly_chart(fig, use_container_width=True)
+
 
 elif contents_selectbox == "Conclusions":
     st.title("Conclusions")
