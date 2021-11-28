@@ -64,7 +64,7 @@ if contents_selectbox == "Introduction":
     })
     fig = px.bar(valid_columns, x="Valid records count", y="Column", color="Column",
                  color_discrete_sequence=px.colors.diverging.Spectral, orientation="h")
-
+    fig.update_layout(showlegend=False)
     st.plotly_chart(fig, use_container_width=True)
 
 elif contents_selectbox == "Which platforms suitable for the level":
@@ -76,7 +76,6 @@ elif contents_selectbox == "Which platforms suitable for the level":
     """)
     df_feature_level = count_values_for_feature(dataframe, "level")
     fig_level = px.pie(df_feature_level, values='level', names='index', hole=.3, color_discrete_sequence=px.colors.diverging.Spectral)
-    fig_level.update_layout(title_text="Most common difficulty level")
     st.plotly_chart(fig_level, use_container_width=True)
 
     st.markdown("""
@@ -90,7 +89,6 @@ elif contents_selectbox == "Which platforms suitable for the level":
 
     df_feature_platform = count_values_for_feature(dataframe_quantitative, "platform")
     fig_platform = px.pie(df_feature_platform, values='platform', names='index', hole=.3, color_discrete_sequence=px.colors.diverging.Spectral)
-    fig_platform.update_layout(title_text="Amount of content of educational platforms")
     st.plotly_chart(fig_platform, use_container_width=True)
 
     st.markdown("""
@@ -100,7 +98,6 @@ elif contents_selectbox == "Which platforms suitable for the level":
     df_feature_free = count_values_for_feature(dataframe, "free")
     df_feature_free = df_feature_free.replace({True: "Free", False: "Paid"})
     fig_free = px.pie(df_feature_free, values='free', names='index', hole=.3, color_discrete_sequence=px.colors.diverging.Spectral)
-    fig_free.update_layout(title_text="Free/Paid courses ratio")
     st.plotly_chart(fig_free, use_container_width=True)
 
     st.markdown(f"""
@@ -126,6 +123,8 @@ elif contents_selectbox == "Which platforms suitable for the level":
 
 elif contents_selectbox == "What depends on the course rating":
     st.title("What depends on the course rating?")
+
+    ###
     st.markdown("[TODO] Rating distribution over platforms.")
 
     corrected_rating = dataframe[(dataframe.rating > 0.0) & (dataframe.rating is not None)]
@@ -142,9 +141,9 @@ elif contents_selectbox == "What depends on the course rating":
             ),
             line=dict(width=1)))
 
-    fig.update_layout(title_text="Amount of content of educational platforms")
     st.plotly_chart(fig, use_container_width=True)
 
+    ###
     st.markdown("[TODO] Plot keywords set for each rating category.")
 
     wordcloud_files = sorted([f for f in listdir(wordcloud_folder_name)
@@ -157,6 +156,38 @@ elif contents_selectbox == "What depends on the course rating":
 
         with col:
             st.image(f"{wordcloud_folder_name}/{file}", use_column_width=True, caption=f"{i+1}-star keywords")
+
+    ###
+    st.markdown("[TODO] determine the average rating of the TOP-20 organization with the most significant amount of courses available.")
+
+    top_distributors_count = 20
+    dataframe_rating = dataframe[(dataframe.rating > 0.0) & (dataframe.rating is not None)].copy()
+
+    dataframe_top_distributors = dataframe_rating[["author", "title"]].groupby("author").count().sort_values(
+        by=["title"], ascending=[False]
+    ).iloc[:top_distributors_count]
+
+    top_distributors = dataframe_top_distributors.index.values
+
+    dataframe_top_distributors_rating = dataframe_rating[
+        dataframe_rating["author"].isin(top_distributors)
+    ].groupby("author").agg(
+        mean=pd.NamedAgg(column="rating", aggfunc="mean"),
+        std=pd.NamedAgg(column="rating", aggfunc="std"),
+    ).sort_values(by=["mean"], ascending=[True])
+
+    dataframe_top_distributors_rating.reset_index(inplace=True)
+    fig = px.bar(dataframe_top_distributors_rating, x="mean",
+                 y="author", error_x="std",
+                 labels={
+                    "author": "Course publisher",
+                    "mean": "Average rating"
+                 },
+                 color_discrete_sequence=px.colors.diverging.Spectral_r,
+                 orientation="h")
+    fig.update_layout(showlegend=False)
+
+    st.plotly_chart(fig, use_container_width=True)
 
 elif contents_selectbox == "Conclusions":
     st.title("Conclusions")
