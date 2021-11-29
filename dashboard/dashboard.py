@@ -1,13 +1,12 @@
-import stylecloud
-
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.figure_factory as ff
 
 import streamlit as st
 import pandas as pd
 
-from preprocessing import text_preprocessing
 from static import *
+from sklearn.preprocessing import LabelEncoder
 
 from os import listdir
 from os.path import isfile, join
@@ -139,6 +138,7 @@ elif contents_selectbox == "What depends on the course rating":
                 size=2,
                 color='rgb(0, 0, 0)'
             ),
+            name=platform,
             line=dict(width=1)))
 
     st.plotly_chart(fig, use_container_width=True)
@@ -183,9 +183,45 @@ elif contents_selectbox == "What depends on the course rating":
                     "author": "Course publisher",
                     "mean": "Average rating"
                  },
-                 color_discrete_sequence=px.colors.diverging.Spectral_r,
+                 color_discrete_sequence=px.colors.diverging.Spectral,
                  orientation="h")
     fig.update_layout(showlegend=False)
+
+    st.plotly_chart(fig, use_container_width=True)
+
+    ###
+    st.markdown("[TODO] Now we determine which course features directly depend on the rating by calculating correlation between every feature.")
+
+    dataframe_corr = dataframe_rating[["rating", "students_count", "level", "duration", "free"]].copy()
+
+    encoder = LabelEncoder()
+
+    dataframe_corr['level'] = encoder.fit_transform(dataframe_corr['level'].values)
+    dataframe_corr['free'] = encoder.fit_transform(dataframe_corr['free'].values)
+
+    fig = px.imshow(dataframe_corr.corr(), zmin=-1.0, zmax=1.0,
+                    color_continuous_scale=px.colors.sequential.Hot,
+                    labels={ "x": "Feature", "y": "Comparison feature", "color": "Correlation value" })
+    st.plotly_chart(fig, use_container_width=True)
+
+    ###
+    st.markdown("[TODO] It seems that there is no connection between course rating and enrolled students, as well as between course rating and difficulty level.")
+    group_labels = dataframe_rating['free'].unique()
+    hist_data = [dataframe_rating[dataframe_rating.free == label]["rating"].values for label in group_labels]
+
+    show_hist, show_curve, show_rug = False, True, True
+    col_hist_option, col_rug_option = st.columns(2)
+
+    with col_hist_option:
+        show_hist = st.checkbox("Show histogram", value=False)
+
+    with col_rug_option:
+        show_rug = st.checkbox("Show distribution rug", value=True)
+
+    fig = ff.create_distplot(hist_data, ["Free", "Paid"],
+                             bin_size=.1, show_hist=show_hist,
+                             show_curve=show_curve, show_rug=show_rug,
+                             colors=["rgb(50,136,189)", "rgb(94,79,162)"])
 
     st.plotly_chart(fig, use_container_width=True)
 
