@@ -124,7 +124,11 @@ elif contents_selectbox == "What depends on the course rating":
     st.title("What depends on the course rating?")
 
     ###
-    st.markdown("[TODO] Rating distribution over platforms.")
+    st.markdown("""
+        The rating metric may give some insights into the quality of the provided learning material in the course, although it doesn't guarantee an exact quality.
+        Platforms with high content variety tend to record it, so it is missing on Alison and edX. The expected rating is the highest on the Coursera platform, from 4 to 5 stars (without including outliers) and the average value.
+        _So for students, who seek **paid quality content**, Coursera is the best choice._
+    """)
 
     corrected_rating = dataframe[(dataframe.rating > 0.0) & (dataframe.rating is not None)]
     dataframe_platforms = corrected_rating['platform'].unique()
@@ -144,7 +148,12 @@ elif contents_selectbox == "What depends on the course rating":
     st.plotly_chart(fig, use_container_width=True)
 
     ###
-    st.markdown("[TODO] Plot keywords set for each rating category.")
+    st.markdown("""
+        To make the course grab the student's attention, distributors have to develop relevant titles for the preview. 
+        Courses may not meet the user's expectations if they cover topics inappropriate for Data Science, like coding interviews or web development. 
+        Indeed, courses with a low rating tend to contain off-topic keywords in the title, like "Tetris", "JS", "Web" e.t.c. 
+        And courses with the highest rating include more appropriate keywords, like "Python", "Machine learning", "Statistics" e.t.c.
+    """)
 
     wordcloud_files = sorted([f for f in listdir(wordcloud_folder_name)
                               if isfile(join(wordcloud_folder_name, f))])
@@ -158,7 +167,11 @@ elif contents_selectbox == "What depends on the course rating":
             st.image(f"{wordcloud_folder_name}/{file}", use_column_width=True, caption=f"{i+1}-star keywords")
 
     ###
-    st.markdown("[TODO] determine the average rating of the TOP-20 organization with the most significant amount of courses available.")
+    st.markdown("""
+        Remember that platforms are only responsible for distributing the courses, while their creation depends entirely on third-party organizations'. 
+        Among the technical organizations with the highest rating, there are SAS, DeepLearning.AI, and IBM. 
+        Meanwhile, educational institutes with the highest rating are The University of Michigan, University of California, Johns Hopkins University.
+    """)
 
     top_distributors_count = 20
     dataframe_rating = dataframe[(dataframe.rating > 0.0) & (dataframe.rating is not None)].copy()
@@ -190,7 +203,14 @@ elif contents_selectbox == "What depends on the course rating":
     st.plotly_chart(fig, use_container_width=True)
 
     ###
-    st.markdown("[TODO] Now we determine which course features directly depend on the rating by calculating correlation between every feature.")
+    st.markdown("""
+        Distributional platform and title relevance may influence the course rating, but they are probably not the only metrics that affect the user experience. 
+        These are the following candidates that may also contribute to the course rating with the assumptions:
+    - **Active enrolled students** - the higher students amount, the more trust in the course from the community;
+    - **Level** - courses with general level may fall into a specific level category;
+    - **Duration** - courses with a longer timespan may cover topics not related to the user expectations;
+    - **Is the course free?** - if the course has a cost, it may be developed by commercial organizations with a professional approach, resulting in higher quality.
+    """)
 
     dataframe_corr = dataframe_rating[["rating", "students_count", "level", "duration", "free"]].copy()
 
@@ -205,7 +225,12 @@ elif contents_selectbox == "What depends on the course rating":
     st.plotly_chart(fig, use_container_width=True)
 
     ###
-    st.markdown("[TODO] It seems that there is no connection between course rating and enrolled students, as well as between course rating and difficulty level.")
+    st.markdown("""
+        Free/paid and rating are the only metrics with a high enough correlation value to be somehow related. 
+        Their moderate negative correlation means that free courses tend to get a lower rating, while paid courses get a higher rating. 
+        From the general cases we know, that **correlation is not causation**. Still, the assumption above explains this moderate relation well. 
+        The probability estimation with the "kernel density" below supports this assumption (the most probable paid course rating is around 4.5, while free - approximately 3.0).
+    """)
     group_labels = dataframe_rating['free'].unique()
     hist_data = [dataframe_rating[dataframe_rating.free == label]["rating"].values for label in group_labels]
 
@@ -218,7 +243,7 @@ elif contents_selectbox == "What depends on the course rating":
     with col_rug_option:
         show_rug = st.checkbox("Show distribution rug", value=True)
 
-    fig = ff.create_distplot(hist_data, ["Free", "Paid"],
+    fig = ff.create_distplot(hist_data, ["Paid", "Free"],
                              bin_size=.1, show_hist=show_hist,
                              show_curve=show_curve, show_rug=show_rug,
                              colors=["rgb(50,136,189)", "rgb(94,79,162)"])
