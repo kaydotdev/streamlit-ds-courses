@@ -1,5 +1,7 @@
 # Online Data Science Courses
 
+[![Source Code](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/antonAce/data-science-courses)
+[![Kaggle notebook](https://img.shields.io/badge/Kaggle-20BEFF?style=for-the-badge&logo=Kaggle&logoColor=white)](https://www.kaggle.com/antonkozyriev/which-ds-online-course-to-take-first)
 [![Made with StreamLit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=Streamlit&logoColor=white)](https://data-science-courses.herokuapp.com/)
 
 All source code for [Data Science Courses](https://www.kaggle.com/antonkozyriev/online-data-science-courses) project on Kaggle platform including webcrawlers, preprocessing pipelines and EDA notebooks.
