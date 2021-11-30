@@ -18,3 +18,31 @@ Data was collected via web scraping from popular online platforms: [Coursera](ht
 ### Inspiration
 
 The primary intent behind collecting courses data is to discover which online platform provides the highest educational quality. Also, further analysis should reveal answers like "Does a paid course provide higher quality than a free one?" or "Which platform is the most suitable for beginners?".
+
+### Run dashboard locally
+
+First, change the directory from the `root` to the `dashboard`:
+
+```sh
+cd dashboard
+```
+
+If you have a virtual environment, activate it:
+
+```sh
+source venv/bin/activate
+```
+
+Launch `Streamlit` server:
+
+```sh
+streamlit run dashboard.py --server.port 8080
+```
+
+### Deploy to the Cloud
+
+Once you have committed all your changes to the repository, run the following command from the `root` folder:
+
+```sh
+git subtree push --prefix dashboard heroku master # Heroku
+```
