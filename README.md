@@ -6,9 +6,11 @@
 
 All source code for [Data Science Courses](https://www.kaggle.com/antonkozyriev/online-data-science-courses) project on Kaggle platform including webcrawlers, preprocessing pipelines and EDA notebooks.
 
+
 ### Context
 
 Nowadays, online educational platforms provide a vast amount of online courses. For self-learning beginners in Data Science, sometimes it's hard to choose an online course to start. This data was collected with the intent to answer common questions when choosing a new study.
+
 
 ### Acknowledgements
 
@@ -19,6 +21,7 @@ Data was collected via web scraping from popular online platforms: [Coursera](ht
 
 The primary intent behind collecting courses data is to discover which online platform provides the highest educational quality. Also, further analysis should reveal answers like "Does a paid course provide higher quality than a free one?" or "Which platform is the most suitable for beginners?".
 
+
 ### Run dashboard locally
 
 Launch `Streamlit` server:
@@ -26,4 +29,3 @@ Launch `Streamlit` server:
 ```sh
 streamlit run dashboard.py --server.port 8080
 ```
-
