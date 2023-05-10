@@ -21,28 +21,9 @@ The primary intent behind collecting courses data is to discover which online pl
 
 ### Run dashboard locally
 
-First, change the directory from the `root` to the `dashboard`:
-
-```sh
-cd dashboard
-```
-
-If you have a virtual environment, activate it:
-
-```sh
-source venv/bin/activate
-```
-
 Launch `Streamlit` server:
 
 ```sh
 streamlit run dashboard.py --server.port 8080
 ```
 
-### Deploy to the Cloud
-
-Once you have committed all your changes to the repository, run the following command from the `root` folder:
-
-```sh
-git subtree push --prefix dashboard heroku master # Heroku
-```
