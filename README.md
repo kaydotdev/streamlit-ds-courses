@@ -27,5 +27,5 @@ The primary intent behind collecting courses data is to discover which online pl
 Launch `Streamlit` server:
 
 ```sh
-streamlit run dashboard.py --server.port 8080
+streamlit run Introduction.py --server.port 8080
 ```
