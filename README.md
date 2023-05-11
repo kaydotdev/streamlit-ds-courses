@@ -21,11 +21,3 @@ Data was collected via web scraping from popular online platforms: [Coursera](ht
 
 The primary intent behind collecting courses data is to discover which online platform provides the highest educational quality. Also, further analysis should reveal answers like "Does a paid course provide higher quality than a free one?" or "Which platform is the most suitable for beginners?".
 
-
-### Run dashboard locally
-
-Launch `Streamlit` server:
-
-```sh
-streamlit run Introduction.py --server.port 8080
-```
