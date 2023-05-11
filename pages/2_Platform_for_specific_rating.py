@@ -6,14 +6,6 @@ import streamlit as st
 from app_settings import DATAFRAME_PATH
 
 
-def group_feature_val(df: pd.DataFrame, name: str):
-    df = df[name].value_counts().to_frame()
-    df.reset_index(inplace=True)
-    df = df.sort_values(name, ascending=False)
-
-    return df
-
-
 st.set_page_config(
     page_title="Which platform is more suitable for a specific level?",
     page_icon="❓",
@@ -27,16 +19,39 @@ st.markdown(
     """
     The Data Science field is not a **"buzzword"** anymore, nevertheless there are still cases when people switch jobs to become Data Scientists. 
     So it's reasonable to assume that majority of the courses is dedicated to the Beginners, which is true according to the difficulty level distribution of the data.
-"""
+    """
 )
 
-dataframe = pd.read_csv(DATAFRAME_PATH, index_col=0)
-df_feature_level = group_feature_val(dataframe, "level")
+with st.sidebar:
+    st.subheader("Platforms groups")
 
+    st.markdown(
+        """
+        To make feature comparison in this section more clear on the charts, we need to group platforms with low number of samples into a general category.
+        """
+    )
+
+    platforms_to_group = st.multiselect(
+        "Choose platforms to group into 'Other' category",
+        ["Stepik", "Alison", "FutureLearn", "Pluralsight", "edX"],
+        ["Stepik", "Alison", "FutureLearn", "Pluralsight"],
+    )
+
+
+dataframe = pd.read_csv(DATAFRAME_PATH, index_col=0)
+dataframe_quantitative = dataframe.replace(to_replace=platforms_to_group, value="Other")
+df_feature_groups = {}
+
+for feature in ["level", "platform", "free"]:
+    df_feature_group = dataframe_quantitative[feature].value_counts().to_frame()
+    df_feature_group.reset_index(inplace=True)
+    df_feature_groups[feature] = df_feature_group.sort_values(feature, ascending=False)
+
+print(df_feature_groups["level"])
 fig_level = px.pie(
-    df_feature_level,
-    values="level",
-    names="index",
+    df_feature_groups["level"],
+    values="count",
+    names="level",
     hole=0.3,
     color_discrete_sequence=px.colors.diverging.Spectral,
 )
@@ -47,18 +62,11 @@ st.markdown(
     Overviewed educational platforms are the most popular among existing on the Internet. Here is shown which platforms provide more content than others.
 """
 )
-platforms_to_group = st.multiselect(
-    "Merge the smallest platforms into a general group",
-    ["Stepik", "Alison", "FutureLearn", "Pluralsight", "edX"],
-    ["Stepik", "Alison", "FutureLearn", "Pluralsight"],
-)
 
-dataframe_quantitative = dataframe.replace(to_replace=platforms_to_group, value="Other")
-df_feature_platform = group_feature_val(dataframe_quantitative, "platform")
 fig_platform = px.pie(
-    df_feature_platform,
-    values="platform",
-    names="index",
+    df_feature_groups["platform"],
+    values="count",
+    names="platform",
     hole=0.3,
     color_discrete_sequence=px.colors.diverging.Spectral,
 )
@@ -70,12 +78,10 @@ st.markdown(
 """
 )
 
-df_feature_free = group_feature_val(dataframe, "free")
-df_feature_free = df_feature_free.replace({True: "Free", False: "Paid"})
 fig_free = px.pie(
-    df_feature_free,
-    values="free",
-    names="index",
+    df_feature_groups["free"].replace({True: "Free", False: "Paid"}),
+    values="count",
+    names="free",
     hole=0.3,
     color_discrete_sequence=px.colors.diverging.Spectral,
 )
@@ -89,9 +95,8 @@ st.markdown(
 """
 )
 
-dataframe_difficulty = (
-    dataframe.groupby(["platform", "level"]).size().reset_index(name="counts")
-)
+dataframe_difficulty = dataframe.groupby(["platform", "level"]).size()
+dataframe_difficulty.reset_index(names="counts")
 dataframe_levels = dataframe_difficulty["level"].unique()
 
 fig = go.Figure(
