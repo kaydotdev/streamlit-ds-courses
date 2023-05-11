@@ -47,7 +47,6 @@ for feature in ["level", "platform", "free"]:
     df_feature_group.reset_index(inplace=True)
     df_feature_groups[feature] = df_feature_group.sort_values(feature, ascending=False)
 
-print(df_feature_groups["level"])
 fig_level = px.pie(
     df_feature_groups["level"],
     values="count",
@@ -95,17 +94,17 @@ st.markdown(
 """
 )
 
-dataframe_difficulty = dataframe.groupby(["platform", "level"]).size()
-dataframe_difficulty.reset_index(names="counts")
-dataframe_levels = dataframe_difficulty["level"].unique()
+df_course_difficulty = dataframe.groupby(["platform", "level"]).size().to_frame().rename(columns={ 0: "counts" })
+df_course_difficulty.reset_index(inplace=True)
+dataframe_levels = df_course_difficulty["level"].unique()
 
 fig = go.Figure(
     data=[
         go.Bar(
             name=level,
             marker_color=color,
-            x=dataframe_difficulty[dataframe_difficulty.level == level]["platform"],
-            y=dataframe_difficulty[dataframe_difficulty.level == level]["counts"],
+            x=df_course_difficulty[df_course_difficulty.level == level]["platform"],
+            y=df_course_difficulty[df_course_difficulty.level == level]["counts"],
         )
         for level, color in zip(
             dataframe_levels, px.colors.diverging.Spectral_r[: len(dataframe_levels)]
