@@ -87,7 +87,7 @@ fig_free = px.pie(
 st.plotly_chart(fig_free, use_container_width=True)
 
 st.markdown(
-    f"""
+    """
     The **Beginner** level is the level of most courses, dedicated for students who only started their Data Science journey or for learners who want to try themselves in another field of activity. 
     **Udemy** platform offers the greatest amount of courses for **Beginner** and **General** levels, which are the most suitable levels for the learners' group mentioned above. 
     For more experienced learners, **Coursera** is a better choice in terms of content variety for **Intermediate** and **Advanced** levels.
