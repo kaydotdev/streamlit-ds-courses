@@ -19,6 +19,9 @@ plotly = "^5.14.1"
 ruff = "^0.0.267"
 pytest = "^7.3.1"
 
+[tool.poetry.group.pipeline.dependencies]
+pyspark = "^3.4.0"
+
 [tool.ruff]
 select = ["E", "F", "B"]
 ignore = ["E501"]
