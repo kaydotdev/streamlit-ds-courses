@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "streamlit-ds-courses"
+version = "1.0.0"
+description = "An interactive Streamlit dashboard that gives insights on data science courses"
+authors = ["Anton Kozyriev"]
+license = "None"
+readme = "README.md"
+packages = [{include = "streamlit_ds_courses"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dashboard.dependencies]
+streamlit = "^1.22.0"
+scikit-learn = "^1.2.2"
+plotly = "^5.14.1"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.0.267"
+pytest = "^7.3.1"
+
+[tool.ruff]
+select = ["E", "F", "B"]
+ignore = ["E501"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

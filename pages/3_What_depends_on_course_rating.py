@@ -33,7 +33,8 @@ dataframe_platforms = corrected_rating["platform"].unique()
 fig = go.Figure()
 
 for platform, color in zip(
-    dataframe_platforms, px.colors.diverging.Spectral[: len(dataframe_platforms)]
+    dataframe_platforms, px.colors.diverging.Spectral[: len(dataframe_platforms)],
+    strict=True
 ):
     fig.add_trace(
         go.Box(
@@ -68,7 +69,7 @@ wordcloud_files = sorted(
 
 cols = st.columns(len(wordcloud_files))
 
-for i, row in enumerate(zip(cols, wordcloud_files)):
+for i, row in enumerate(zip(cols, wordcloud_files, strict=True)):
     col, file = row
 
     with col:

@@ -5,7 +5,6 @@ import streamlit as st
 
 from app_settings import DATAFRAME_PATH
 
-
 st.set_page_config(
     page_title="Which platform is more suitable for a specific level?",
     page_icon="❓",
@@ -107,7 +106,8 @@ fig = go.Figure(
             y=df_course_difficulty[df_course_difficulty.level == level]["counts"],
         )
         for level, color in zip(
-            dataframe_levels, px.colors.diverging.Spectral_r[: len(dataframe_levels)]
+            dataframe_levels, px.colors.diverging.Spectral_r[: len(dataframe_levels)],
+            strict=True
         )
     ]
 )
