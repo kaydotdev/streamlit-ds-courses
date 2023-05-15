@@ -11,15 +11,20 @@ all-dep:
 min-dep:
 	poetry install
 
-.PHONY: pylint
+.PHONY: lint
 # Verify proper formatting for Python files
-pylint:
+lint:
 	ruff check .
 
-.PHONY: pyformat
+.PHONY: format
 # Automatic fix linting erros for all Python files
-pyformat:
+format:
 	ruff check --fix .
+
+.PHONY: test
+# Run all project test suites
+test:
+	pytest test/
 
 .PHONY: serve
 # Launch a Streamlit dashboard server
