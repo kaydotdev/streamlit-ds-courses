@@ -15,17 +15,25 @@ streamlit = "^1.22.0"
 scikit-learn = "^1.2.2"
 plotly = "^5.14.1"
 
+[tool.poetry.group.dev]
+optional = true
+
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.0.267"
 pytest = "^7.3.1"
 
+[tool.poetry.group.pipeline]
+optional = true
+
 [tool.poetry.group.pipeline.dependencies]
 pyspark = "^3.4.0"
+numpy = "^1.24.3"
 
 [tool.ruff]
-select = ["E", "F", "B"]
+select = ["E", "F", "B", "I"]
 ignore = ["E501"]
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
