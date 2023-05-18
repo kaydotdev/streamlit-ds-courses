@@ -1,2 +1,2 @@
-from .text import sub_sepr, sub_space, sub_numwords
+from .text import sub_numwords, sub_sepr, sub_space
 

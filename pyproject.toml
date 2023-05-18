@@ -31,7 +31,7 @@ numpy = "^1.24.3"
 
 [tool.ruff]
 select = ["E", "F", "B", "I"]
-ignore = ["E501"]
+ignore = ["E501", "F401", "F403"]
 
 [build-system]
 requires = ["poetry-core"]

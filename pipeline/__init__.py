@@ -1,2 +1,2 @@
-from util import sub_sepr, sub_numwords, sub_space
+from util import sub_numwords, sub_sepr, sub_space
 
