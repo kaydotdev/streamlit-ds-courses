@@ -53,7 +53,7 @@ def process_level_field(val: str) -> str:
         val (str): Raw value of course difficulty level.
 
     Returns:
-        str: Parsed difficulty level, which takes one of the following values: ['Beginner', 'Intermediate', 'Advanced', 'Mixed']
+        str: Parsed difficulty level, which takes one of the following values: ['Beginner', 'Intermediate', 'Advanced', 'Mixed'].
     """
 
     val = val.replace("Level: ", "")
