@@ -1,6 +1,6 @@
 import re
-import numpy as np
 
+import numpy as np
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import col, udf
 from pyspark.sql.types import DoubleType, IntegerType, StringType
