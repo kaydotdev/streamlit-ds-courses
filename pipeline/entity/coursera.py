@@ -4,7 +4,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql.functions import col, udf
 from pyspark.sql.types import DoubleType, IntegerType, StringType
 
-from .common import clean_text_udf
+from ..common import clean_text_udf
 
 
 def process_student_field(val: str) -> int:
@@ -61,7 +61,7 @@ def process_duration_field(val: str) -> float | None:
         val (str): Raw value of course duration.
 
     Returns:
-        str | None: Parsed duration value.
+        float | None: Parsed duration value.
     """
 
     if "Approx" in val:

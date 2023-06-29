@@ -2,7 +2,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql.functions import col, udf
 from pyspark.sql.types import StringType
 
-from .common import clean_text_udf
+from ..common import clean_text_udf
 
 
 def process_author_field(val: list) -> str | None:
