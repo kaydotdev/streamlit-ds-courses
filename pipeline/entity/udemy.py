@@ -118,7 +118,7 @@ def process_udemy_df(df: DataFrame) -> DataFrame:
     """Immutable processing of a dataframe.
 
     Args:
-        df (DataFrame): Unprocessed Coursera dataframe.
+        df (DataFrame): Unprocessed Udemy dataframe.
 
     Returns:
         DataFrame: New processed dataframe.
