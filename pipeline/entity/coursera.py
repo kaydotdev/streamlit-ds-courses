@@ -61,7 +61,7 @@ def process_duration_field(val: str) -> float | None:
         val (str): Raw value of course duration.
 
     Returns:
-        float | None: Parsed duration value.
+        float | None: Parsed duration value in hours.
     """
 
     if "Approx" in val:
