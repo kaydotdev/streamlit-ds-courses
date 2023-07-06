@@ -7,7 +7,6 @@ import plotly.graph_objects as go
 import streamlit as st
 from sklearn.preprocessing import LabelEncoder
 
-
 st.set_page_config(
     page_title="What depends on the course rating?",
     page_icon="⭐",
