@@ -2,7 +2,6 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-from app_settings import DATAFRAME_PATH
 
 st.set_page_config(
     page_title="Streamlit dashboard: Which DS online course to take first?",
@@ -41,7 +40,7 @@ From each platform were queried courses only related to the "Data Science" topic
 st.subheader("Data preview")
 st.markdown("Structure of the collected data.")
 
-dataframe = pd.read_csv(DATAFRAME_PATH, index_col=0)
+dataframe = pd.read_csv(st.secrets.dataframe.path, index_col=0)
 
 if st.checkbox("Display head only", value=True):
     st.dataframe(dataframe.head())
@@ -75,3 +74,4 @@ fig = px.bar(
 fig.update_layout(showlegend=False)
 
 st.plotly_chart(fig, use_container_width=True)
+

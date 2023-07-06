@@ -3,7 +3,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from app_settings import DATAFRAME_PATH
 
 st.set_page_config(
     page_title="Which platform is more suitable for a specific level?",
@@ -37,7 +36,7 @@ with st.sidebar:
     )
 
 
-dataframe = pd.read_csv(DATAFRAME_PATH, index_col=0)
+dataframe = pd.read_csv(st.secrets.dataframe.path, index_col=0)
 dataframe_quantitative = dataframe.replace(to_replace=platforms_to_group, value="Other")
 df_feature_groups = {}
 
@@ -114,3 +113,4 @@ fig = go.Figure(
 
 fig.update_layout(barmode="group")
 st.plotly_chart(fig, use_container_width=True)
+

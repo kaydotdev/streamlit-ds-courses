@@ -7,7 +7,6 @@ import plotly.graph_objects as go
 import streamlit as st
 from sklearn.preprocessing import LabelEncoder
 
-from app_settings import DATAFRAME_PATH, STATIC_ASSETS_PATH
 
 st.set_page_config(
     page_title="What depends on the course rating?",
@@ -27,7 +26,7 @@ st.markdown(
 """
 )
 
-dataframe = pd.read_csv(DATAFRAME_PATH, index_col=0)
+dataframe = pd.read_csv(st.secrets.dataframe.path, index_col=0)
 corrected_rating = dataframe[(dataframe.rating > 0.0) & (dataframe.rating is not None)]
 dataframe_platforms = corrected_rating["platform"].unique()
 fig = go.Figure()
@@ -58,7 +57,7 @@ st.markdown(
 """
 )
 
-wordcloud_folder_path = os.path.join(STATIC_ASSETS_PATH, "wordcloud")
+wordcloud_folder_path = os.path.join(st.secrets.assets.path, "wordcloud")
 wordcloud_files = sorted(
     [
         f
@@ -192,3 +191,4 @@ fig = ff.create_distplot(
 )
 
 st.plotly_chart(fig, use_container_width=True)
+
