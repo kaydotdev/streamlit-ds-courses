@@ -1,4 +1,3 @@
-import numpy as np
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import col, udf
 from pyspark.sql.types import DoubleType, IntegerType, StringType
@@ -29,53 +28,33 @@ def process_rating_field(val: str) -> float | None:
         float | None: Parsed course rating.
     """
 
-    return float(val) if val is not None else None
+    return float(val[:3]) if val is not None else None
 
 
-def process_level_field(val: str) -> str:
-    """Parse course level field. If level is not specified, then returns 'Mixed'.
-
-    Args:
-        val (str): Raw value of course difficulty level.
-
-    Returns:
-        str: Parsed difficulty level, which takes one of the following values: ['Beginner', 'Intermediate', 'Advanced', 'Mixed'].
-    """
-
-    level = val.replace("Level: ", "")
-
-    if level == "Expert":
-        return "Advanced"
-    elif level == "All Levels":
-        return "Mixed"
-    else:
-        return level
-
-
-def process_votes_field(val: str) -> int:
+def process_votes_field(val: str) -> int | None:
     """Parse votes number field, extracting digits.
 
     Args:
         val (str): Raw value of course votes.
 
     Returns:
-        int: Parsed votes number.
+        int | None: Parsed votes number.
     """
 
     return int(safe_extract_digit(val.replace(",", ""), 0))
 
 
-def process_student_field(val: str) -> int:
+def process_student_field(val: str | None) -> int | None:
     """Parse the student number field.
 
     Args:
-        val (str): Raw value of student numbers.
+        val (str | None): Raw value of student numbers.
 
     Returns:
-        int: Parsed number.
+        int | None: Parsed number.
     """
 
-    return int(safe_extract_digit(val.strip("\n").replace(",", ""), 0))
+    return int(safe_extract_digit(val.replace(",", ""), 0)) if val is not None else None
 
 
 def process_duration_field(val: str) -> float | None:
@@ -88,29 +67,24 @@ def process_duration_field(val: str) -> float | None:
         float | None: Parsed duration value in hours.
     """
 
-    if " total hours" in val:
-        return float(val.replace(" total hours", ""))
-    elif " total hour" in val:
-        return float(val.replace(" total hour", ""))
-    elif " total mins" in val:
-        return float(np.round(float(val.replace(" total mins", "")) / 60.0, decimals=1))
-    else:
-        return None
+    weeks, hours = tuple(val.split(";"))
+
+    return float(safe_extract_digit(weeks, 0.0)) * 7.0 * 24.0 + \
+            float(safe_extract_digit(hours, 0.0))
 
 
 process_author_field_udf = udf(lambda x: process_author_field(x), StringType())
 process_rating_field_udf = udf(lambda x: process_rating_field(x), DoubleType())
-process_level_field_udf = udf(lambda x: process_level_field(x), StringType())
 process_votes_field_udf = udf(lambda x: process_votes_field(x), IntegerType())
 process_student_field_udf = udf(lambda x: process_student_field(x), IntegerType())
 process_duration_field_udf = udf(lambda x: process_duration_field(x), DoubleType())
 
 
-def process_udemy_df(df: DataFrame) -> DataFrame:
+def process_futurelearn_df(df: DataFrame) -> DataFrame:
     """Immutable processing of a dataframe.
 
     Args:
-        df (DataFrame): Unprocessed Udemy dataframe.
+        df (DataFrame): Unprocessed Futurelearn dataframe.
 
     Returns:
         DataFrame: New processed dataframe.
@@ -122,7 +96,7 @@ def process_udemy_df(df: DataFrame) -> DataFrame:
         process_rating_field_udf(col("rating")).alias("rating"),
         process_votes_field_udf(col("votes_count")).alias("votes_count"),
         process_student_field_udf(col("students_count")).alias("students_count"),
-        process_level_field_udf(col("level")).alias("level"),
+        col("level"),
         process_duration_field_udf(col("duration")).alias("duration"),
         col("platform"), col("free")
     )
