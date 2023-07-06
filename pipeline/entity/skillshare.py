@@ -90,7 +90,7 @@ def process_student_field(val: str) -> int | None:
         val (str): Raw value of student numbers.
 
     Returns:
-        int: Parsed number.
+        int | None: Parsed number.
     """
 
     sanitized_student_number = val.strip("\n").replace(",", "")
