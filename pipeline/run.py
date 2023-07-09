@@ -14,6 +14,16 @@ from .entity.skillshare import process_skillshare_df
 from .entity.futurelearn import process_futurelearn_df
 
 
+def common_struct_fields() -> list:
+    return [
+        StructField("title", StringType(), True),
+        StructField("authors", ArrayType(StringType()), True),
+        StructField("level", StringType(), True),
+        StructField("platform", StringType(), True),
+        StructField("free", BooleanType(), True)
+    ]
+
+
 def main():
     parser = argparse.ArgumentParser(description="Processing pipeline for raw scraped data.")
 
@@ -30,8 +40,7 @@ def main():
 
     args = parser.parse_args()
 
-
-    spark = SparkSession.builder\
+    spark = SparkSession.Builder()\
         .appName("Scraped data processing pipeline")\
         .master("local[*]")\
         .config("spark.driver.memory","40G")\
@@ -40,106 +49,74 @@ def main():
         .getOrCreate()
 
     coursera_schema = StructType([
-        StructField("title", StringType(), True),
+        *common_struct_fields(),
         StructField("description", StringType(), True),
-        StructField("authors", ArrayType(StringType()), True),
         StructField("rating", DoubleType(), True),
         StructField("votes_count", StringType(), True),
         StructField("students_count", StringType(), True),
-        StructField("level", StringType(), True),
-        StructField("duration", StringType(), True),
-        StructField("platform", StringType(), True),
-        StructField("free", BooleanType(), True)
+        StructField("duration", StringType(), True)
     ])
 
     stepik_schema = StructType([
-        StructField("title", StringType(), True),
-        StructField("authors", ArrayType(StringType()), True),
+        *common_struct_fields(),
         StructField("rating", DoubleType(), True),
         StructField("votes_count", DoubleType(), True),
         StructField("students_count", IntegerType(), True),
-        StructField("level", StringType(), True),
-        StructField("duration", DoubleType(), True),
-        StructField("platform", StringType(), True),
-        StructField("free", BooleanType(), True)
+        StructField("duration", DoubleType(), True)
     ])
 
     edx_schema = StructType([
-        StructField("title", StringType(), True),
+        *common_struct_fields(),
         StructField("description", StringType(), True),
-        StructField("authors", ArrayType(StringType()), True),
         StructField("rating", DoubleType(), True),
         StructField("votes_count", IntegerType(), True),
         StructField("students_count", StringType(), True),
-        StructField("level", StringType(), True),
-        StructField("duration", StringType(), True),
-        StructField("platform", StringType(), True),
-        StructField("free", BooleanType(), True)
+        StructField("duration", StringType(), True)
     ])
 
     pluralsight_schema = StructType([
-        StructField("title", StringType(), True),
+        *common_struct_fields(),
         StructField("description", StringType(), True),
-        StructField("authors", ArrayType(StringType()), True),
         StructField("rating", StringType(), True),
         StructField("votes_count", StringType(), True),
         StructField("students_count", StringType(), True),
-        StructField("level", StringType(), True),
-        StructField("duration", StringType(), True),
-        StructField("platform", StringType(), True),
-        StructField("free", BooleanType(), True)
+        StructField("duration", StringType(), True)
     ])
 
     alison_schema = StructType([
-        StructField("title", StringType(), True),
+        *common_struct_fields(),
         StructField("description", StringType(), True),
-        StructField("authors", ArrayType(StringType()), True),
         StructField("rating", StringType(), True),
         StructField("votes_count", StringType(), True),
         StructField("students_count", StringType(), True),
-        StructField("level", StringType(), True),
-        StructField("duration", StringType(), True),
-        StructField("platform", StringType(), True),
-        StructField("free", BooleanType(), True)
+        StructField("duration", StringType(), True)
     ])
 
     udemy_schema = StructType([
-        StructField("title", StringType(), True),
+        *common_struct_fields(),
         StructField("description", StringType(), True),
-        StructField("authors", ArrayType(StringType()), True),
         StructField("rating", StringType(), True),
         StructField("votes_count", StringType(), True),
         StructField("students_count", StringType(), True),
-        StructField("level", StringType(), True),
-        StructField("duration", StringType(), True),
-        StructField("platform", StringType(), True),
-        StructField("free", BooleanType(), True)
+        StructField("duration", StringType(), True)
     ])
 
     skillshare_schema = StructType([
-        StructField("title", StringType(), True),
+        *common_struct_fields(),
         StructField("description", StringType(), True),
-        StructField("authors", ArrayType(StringType()), True),
         StructField("rating", StringType(), True),
         StructField("votes_count", StringType(), True),
         StructField("students_count", StringType(), True),
-        StructField("level", StringType(), True),
-        StructField("duration", StringType(), True),
-        StructField("platform", StringType(), True),
-        StructField("free", BooleanType(), True)
+        StructField("duration", StringType(), True)
     ])
 
     futurelearn_schema = StructType([
-        StructField("title", StringType(), True),
+        *common_struct_fields(),
         StructField("description", StringType(), True),
-        StructField("authors", ArrayType(StringType()), True),
         StructField("rating", StringType(), True),
         StructField("votes_count", StringType(), True),
         StructField("students_count", StringType(), True),
-        StructField("level", StringType(), True),
-        StructField("duration", StringType(), True),
-        StructField("platform", StringType(), True),
-        StructField("free", BooleanType(), True),
+        StructField("duration", StringType(), True)
     ])
 
     final_df = process_coursera_df(spark.read.format("json").schema(coursera_schema).load(args.coursera))\
