@@ -4,7 +4,7 @@
 .PHONY: all-dep
 # Installing dependencies for development, processing and dashboard
 all-dep:
-	poetry install --with dev,pipeline
+	poetry install --with dev,pipeline,webcrawl
 
 .PHONY: min-dep
 # Installing dependencies for dashboard only
