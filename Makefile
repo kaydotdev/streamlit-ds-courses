@@ -31,3 +31,15 @@ test:
 serve:
 	streamlit run Introduction.py
 
+.PHONY: clean
+# Remove all generates files
+clean:
+	rm -f data/*
+
+.PHONY: pipeline
+# Run data processing pipelines
+pipeline:
+	rm -f data/dataframe.csv
+	python pipeline/run.py
+	rm -rf data/intr/
+

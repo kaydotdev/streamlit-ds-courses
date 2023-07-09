@@ -1,17 +1,24 @@
 import argparse
 
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType, StructField, \
-        ArrayType, StringType, DoubleType, IntegerType, BooleanType
+from pyspark.sql.types import (
+    ArrayType,
+    BooleanType,
+    DoubleType,
+    IntegerType,
+    StringType,
+    StructField,
+    StructType,
+)
 
+from .entity.alison import process_alison_df
 from .entity.coursera import process_coursera_df
 from .entity.edx import process_edx_df
+from .entity.futurelearn import process_futurelearn_df
+from .entity.pluralsight import process_pluralsight_df
+from .entity.skillshare import process_skillshare_df
 from .entity.stepik import process_stepik_df
 from .entity.udemy import process_udemy_df
-from .entity.pluralsight import process_pluralsight_df
-from .entity.alison import process_alison_df
-from .entity.skillshare import process_skillshare_df
-from .entity.futurelearn import process_futurelearn_df
 
 
 def common_struct_fields() -> list:
