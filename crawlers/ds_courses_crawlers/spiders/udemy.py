@@ -1,7 +1,6 @@
 import scrapy
 from scrapy_splash import SplashRequest
 
-
 LUA_INFINITE_NAVIGATION_SCROLL_SCRIPT = """
     function main(splash)
         splash:set_user_agent(splash.args.ua)
