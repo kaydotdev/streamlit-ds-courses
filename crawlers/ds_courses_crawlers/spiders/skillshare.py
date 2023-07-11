@@ -69,4 +69,3 @@ class SkillshareSpider(scrapy.Spider):
             yield scrapy.Request(self.api_url, callback=self.parse,
                                  method='POST', headers={"Content-Type": "application/json"},
                                  body=self.build_request_body(self.page_index))
-
