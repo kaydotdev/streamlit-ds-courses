@@ -61,7 +61,7 @@ class UdemySpider(scrapy.Spider):
         )
 
     def parse(self, response):
-        self.logger.info('[scrapy.UdemySpider] ' + response.url)
+        self.logger.info(f"[scrapy.UdemySpider] Parsing resourse URL: '{response.url}'.")
 
         for course in response.css('.course-list--container--3zXPS .popper--popper--2r2To'):
             cb_kwargs = {
@@ -70,7 +70,7 @@ class UdemySpider(scrapy.Spider):
                 'free': course.css("div[data-purpose=course-price-text] > span:nth-child(2)::text").get() == "Free"
             }
 
-            self.logger.info('[scrapy.UdemySpider] Posted request https://www.udemy.com' + course.css("a::attr(href)").get())
+            self.logger.info(f"[scrapy.UdemySpider] Parsing page 'https://www.udemy.com/{course.css('a::attr(href)').get()}'.")
 
             yield SplashRequest(
                 args={
@@ -95,7 +95,7 @@ class UdemySpider(scrapy.Spider):
             )
 
     def parse_page(self, response, **kwargs):
-        self.logger.info('[scrapy.UdemySpider] ' + response.url)
+        self.logger.info(f"[scrapy.UdemySpider] Parsing resourse URL: '{response.url}'.")
 
         yield {
             'title': response.css("h1.udlite-heading-xl::text").get(),

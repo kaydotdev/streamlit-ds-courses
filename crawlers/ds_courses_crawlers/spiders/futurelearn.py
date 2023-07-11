@@ -11,7 +11,7 @@ class FuturelearnSpider(scrapy.Spider):
     def start_requests(self):
         file_names = [path.replace("static_pages/", "") for path in glob.glob('static_pages/*.html')]
 
-        self.logger.info('[scrapy.FuturelearnSpider] ' + str(file_names))
+        self.logger.info(f'[scrapy.FuturelearnSpider] {str(file_names)}.')
 
         for file in file_names:
             yield scrapy.Request(f'static_pages/{file}', callback=self.parse)
