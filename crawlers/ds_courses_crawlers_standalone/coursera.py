@@ -2,6 +2,7 @@ import argparse
 import logging
 import os
 import sys
+import time
 
 import pandas as pd
 from selenium import webdriver
@@ -56,6 +57,8 @@ def main():
 
             logger.info(f"[Driver] Recording entity: {record_base}")
             dataframe = dataframe.append(record_base, ignore_index=True)
+
+            time.sleep(DOWNLOAD_DELAY)
         except Exception as ex:
             logger.error(f"Failed to add new record to the dataframe_meta: {ex}.")
 
