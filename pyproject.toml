@@ -38,7 +38,7 @@ pandas = "^2.0.3"
 scrapy-splash = "^0.9.0"
 
 [tool.ruff]
-select = ["E", "F", "B", "I", "Q"]
+select = ["A", "B", "C4", "E", "EM", "F", "I", "Q", "UP"]
 ignore = ["E501"]
 
 [build-system]

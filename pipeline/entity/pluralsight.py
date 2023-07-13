@@ -50,7 +50,7 @@ def process_rating_field(val: str) -> float | None:
 
     return reduce(
         lambda x, y: x + y,
-        map(lambda x: 0.5 if x == "fa fa-star-half-o" else 1.0, val.split(";"))
+        (0.5 if x == "fa fa-star-half-o" else 1.0 for x in val.split(";"))
     )
 
 
@@ -69,7 +69,7 @@ def process_duration_field(val: str) -> float | None:
     if len(parsed_minutes) == 0:
         return None
 
-    parsed_hours = reduce(lambda x, y: x + y, map(lambda x: float(int(x)), parsed_minutes)) / 60.0
+    parsed_hours = reduce(lambda x, y: x + y, (float(int(x)) for x in parsed_minutes)) / 60.0
     rounded_hours = float(np.round(parsed_hours, decimals=1))
 
     return 0.1 if rounded_hours == 0.0 else rounded_hours

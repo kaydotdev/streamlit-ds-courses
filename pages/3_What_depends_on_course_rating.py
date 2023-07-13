@@ -38,9 +38,9 @@ for platform, color in zip(
         go.Box(
             y=corrected_rating[corrected_rating.platform == platform]["rating"],
             fillcolor=color,
-            marker=dict(size=2, color="rgb(0, 0, 0)"),
+            marker={"size": 2, "color": "rgb(0, 0, 0)"},
             name=platform,
-            line=dict(width=1),
+            line={"width": 1},
         )
     )
 
