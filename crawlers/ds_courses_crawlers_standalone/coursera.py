@@ -1,17 +1,12 @@
 import argparse
 import logging
 import os
-import queue
 import sys
 
 import pandas as pd
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 
-from .common import safe_query_attribute, safe_query_text
-
+from .common import safe_query_text
 
 PAGES_NUMBER = 2
 DOWNLOAD_DELAY = 1.0
