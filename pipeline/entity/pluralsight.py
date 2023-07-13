@@ -32,7 +32,7 @@ def process_votes_field(val: str) -> int | None:
         int | None: Parsed votes number.
     """
 
-    return int(val[1:-1].replace(',', '')) if val is None else None
+    return int(val[1:-1].replace(",", "")) if val is None else None
 
 
 def process_rating_field(val: str) -> float | None:
@@ -50,7 +50,7 @@ def process_rating_field(val: str) -> float | None:
 
     return reduce(
         lambda x, y: x + y,
-        map(lambda x: 0.5 if x == 'fa fa-star-half-o' else 1.0, val.split(';'))
+        map(lambda x: 0.5 if x == "fa fa-star-half-o" else 1.0, val.split(";"))
     )
 
 
@@ -64,7 +64,7 @@ def process_duration_field(val: str) -> float | None:
         float | None: Parsed duration value in hours.
     """
 
-    parsed_minutes = re.findall(r'\d+', val)
+    parsed_minutes = re.findall(r"\d+", val)
 
     if len(parsed_minutes) == 0:
         return None

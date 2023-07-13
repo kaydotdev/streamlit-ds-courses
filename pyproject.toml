@@ -38,8 +38,8 @@ pandas = "^2.0.3"
 scrapy-splash = "^0.9.0"
 
 [tool.ruff]
-select = ["E", "F", "B", "I"]
-ignore = ["E501", "F401", "F403"]
+select = ["E", "F", "B", "I", "Q"]
+ignore = ["E501"]
 
 [build-system]
 requires = ["poetry-core"]

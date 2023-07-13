@@ -6,7 +6,7 @@ import scrapy
 class SkillshareSpider(scrapy.Spider):
     name = "skillshare"
     allowed_domains = ["www.skillshare.com"]
-    api_url = 'https://www.skillshare.com/api/graphql'
+    api_url = "https://www.skillshare.com/api/graphql"
     page_index, page_items = -1, 15
     total_items = 1029
     has_next_page = True
@@ -31,7 +31,7 @@ class SkillshareSpider(scrapy.Spider):
                     "largeCoverUrl  sku  studentCount  teacher {    id    name    username    vanityUsername    " +
                     "__typename  }  title  url  viewer {    hasSavedClass    __typename  }  __typename}query " +
                     "GetClassesQuery($query: String!, $where: SearchFilters!, $after: String!, $first: Int!) {  " +
-                    "search(query: $query, where: $where, analyticsTags: [\"src:browser\", \"src:browser:search\"], " +
+                    'search(query: $query, where: $where, analyticsTags: ["src:browser", "src:browser:search"], ' +
                     "after: $after, first: $first) {    totalCount    searchId    pageInfo {      startCursor      " +
                     "endCursor      hasNextPage      hasPreviousPage      __typename    }    edges {      cursor      " +
                     "node {        ...ClassFields        __typename      }      __typename    }    __typename  }} "
@@ -41,7 +41,7 @@ class SkillshareSpider(scrapy.Spider):
 
     def start_requests(self):
         yield scrapy.Request(self.api_url, callback=self.parse,
-                             method='POST', headers={"Content-Type": "application/json"},
+                             method="POST", headers={"Content-Type": "application/json"},
                              body=self.build_request_body(self.page_index))
 
     def parse(self, response):
@@ -56,16 +56,16 @@ class SkillshareSpider(scrapy.Spider):
             node = element.get("node", {})
 
             yield {
-                'title': node.get("title", None),
-                'authors': [node.get("teacher", {}).get("name", None)],
-                'students_count': node.get("studentCount", None),
-                'duration': node.get("durationInSeconds", None),
-                'platform': 'Skillshare',
-                'free': True,
-                'url': node.get("url", None)
+                "title": node.get("title", None),
+                "authors": [node.get("teacher", {}).get("name", None)],
+                "students_count": node.get("studentCount", None),
+                "duration": node.get("durationInSeconds", None),
+                "platform": "Skillshare",
+                "free": True,
+                "url": node.get("url", None)
             }
 
         if self.has_next_page:
             yield scrapy.Request(self.api_url, callback=self.parse,
-                                 method='POST', headers={"Content-Type": "application/json"},
+                                 method="POST", headers={"Content-Type": "application/json"},
                                  body=self.build_request_body(self.page_index))

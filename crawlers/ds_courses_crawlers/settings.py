@@ -20,7 +20,7 @@ USER_AGENT = "ds_courses_crawlers (+https://github.com/antonAce/streamlit-ds-cou
 ROBOTSTXT_OBEY = True
 
 # Splash headless browser settings
-SPLASH_URL = 'http://0.0.0.0:8050'
+SPLASH_URL = "http://0.0.0.0:8050"
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32

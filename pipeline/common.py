@@ -21,7 +21,7 @@ def safe_extract_digit(val: str, default=None) -> str | Any:
     if val is None:
         return default
 
-    parsed_val = re.search(r'\d+', val)
+    parsed_val = re.search(r"\d+", val)
 
     return parsed_val.group(0) if parsed_val is not None else default
 

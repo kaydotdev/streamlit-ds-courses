@@ -23,7 +23,7 @@ def main():
 
     args = parser.parse_args()
 
-    df_columns = ['title', 'description', 'authors', 'rating', 'votes_count', 'students_count', 'level', 'duration', 'platform', 'free']
+    df_columns = ["title", "description", "authors", "rating", "votes_count", "students_count", "level", "duration", "platform", "free"]
     df = pd.DataFrame(columns=df_columns)
 
     requests_queue = queue.Queue()
@@ -32,7 +32,7 @@ def main():
     logger.setLevel(logging.INFO)
     logger.addHandler(logging.StreamHandler(sys.stdout))
 
-    driver_binary_location = os.environ.get('CHROME_DRIVER')
+    driver_binary_location = os.environ.get("CHROME_DRIVER")
 
     if driver_binary_location is None:
         logger.error("[Driver] Driver binary location is not defined. Set driver binary path in `CHROME_DRIVER`.")
@@ -51,10 +51,10 @@ def main():
         try:
             scroll_anchor_query = EC.presence_of_element_located((By.CSS_SELECTOR, "#mobile-scroll-anchor"))
             scroll_anchor = WebDriverWait(driver, REQUEST_TIMEOUT).until(scroll_anchor_query)
-            cards = scroll_anchor.find_elements(By.CSS_SELECTOR, 'a.course-block-wrapper.more-info')
+            cards = scroll_anchor.find_elements(By.CSS_SELECTOR, "a.course-block-wrapper.more-info")
 
             for card in cards:
-                url = card.get_attribute('href')
+                url = card.get_attribute("href")
                 logger.info(f"[Queue] Recording entity: '{url}'.")
                 requests_queue.put(url)
 
@@ -73,16 +73,16 @@ def main():
         scroll_anchor = WebDriverWait(driver, REQUEST_TIMEOUT).until(scroll_anchor_query)
 
         record = {
-            'title': safe_query_text(driver, '.course-brief--title > h1:nth-child(1)'),
-            'description': safe_query_text(driver, '.course-brief__headline'),
-            'authors': [safe_query_text(driver, 'a.publisher:nth-child(6) > span:nth-child(2)')],
-            'rating': safe_query_attribute(driver, '.stars', 'data-fill'),
-            'votes_count': None,
-            'students_count': safe_query_text(driver, '.course-brief__right > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > span:nth-child(2)'),
-            'level': None,
-            'duration': safe_query_text(driver, '.course-brief__right > div:nth-child(2) > ul:nth-child(1) > li:nth-child(1) > span:nth-child(3)'),
-            'platform': 'Alison',
-            'free': False,
+            "title": safe_query_text(driver, ".course-brief--title > h1:nth-child(1)"),
+            "description": safe_query_text(driver, ".course-brief__headline"),
+            "authors": [safe_query_text(driver, "a.publisher:nth-child(6) > span:nth-child(2)")],
+            "rating": safe_query_attribute(driver, ".stars", "data-fill"),
+            "votes_count": None,
+            "students_count": safe_query_text(driver, ".course-brief__right > div:nth-child(2) > ul:nth-child(1) > li:nth-child(2) > div:nth-child(2) > span:nth-child(2)"),
+            "level": None,
+            "duration": safe_query_text(driver, ".course-brief__right > div:nth-child(2) > ul:nth-child(1) > li:nth-child(1) > span:nth-child(3)"),
+            "platform": "Alison",
+            "free": False,
         }
 
         logger.info(f"[Queue] Recording entity: {record}.")

@@ -20,14 +20,14 @@ def main():
 
     args = parser.parse_args()
 
-    dataframe = pd.DataFrame(columns=['title', 'description', 'authors', 'rating', 'votes_count', 'students_count', 'level', 'duration', 'platform', 'free'])
+    dataframe = pd.DataFrame(columns=["title", "description", "authors", "rating", "votes_count", "students_count", "level", "duration", "platform", "free"])
     dataframe_meta = pd.read_json(args.input, orient="records")
 
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
     logger.addHandler(logging.StreamHandler(sys.stdout))
 
-    driver_binary_location = os.environ.get('CHROME_DRIVER')
+    driver_binary_location = os.environ.get("CHROME_DRIVER")
 
     if driver_binary_location is None:
         logger.error("[Driver] Driver binary location is not defined. Set driver binary path in `CHROME_DRIVER`.")

@@ -31,7 +31,7 @@ def process_student_field(val: str) -> int:
         int: Parsed number.
     """
 
-    return int(val.replace(',', ''))
+    return int(val.replace(",", ""))
 
 
 def process_duration_field(val: str) -> float:
@@ -44,7 +44,7 @@ def process_duration_field(val: str) -> float:
         float: Parsed duration value in hours.
     """
 
-    parsed_minutes = re.findall(r'[\d.]+', val)
+    parsed_minutes = re.findall(r"[\d.]+", val)
     total_duration = np.sum([float(x) for x in parsed_minutes]) / 2.0
 
     return float(np.round(total_duration, decimals=1))

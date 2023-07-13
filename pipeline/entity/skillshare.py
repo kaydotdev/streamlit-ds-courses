@@ -78,7 +78,7 @@ def process_votes_field(val: str) -> int | None:
     """
 
     sanitized_votes = val.replace(",", "")
-    parsed_votes = re.search(r'\d+', sanitized_votes)
+    parsed_votes = re.search(r"\d+", sanitized_votes)
 
     return int(parsed_votes.group(0)) if parsed_votes is not None else None
 
@@ -94,7 +94,7 @@ def process_student_field(val: str) -> int | None:
     """
 
     sanitized_student_number = val.strip("\n").replace(",", "")
-    parsed_student_number = re.search(r'\d+', sanitized_student_number)
+    parsed_student_number = re.search(r"\d+", sanitized_student_number)
 
     return int(parsed_student_number.group(0)) if parsed_student_number is not None else None
 

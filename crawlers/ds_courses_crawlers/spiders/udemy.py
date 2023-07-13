@@ -54,29 +54,29 @@ class UdemySpider(scrapy.Spider):
 
     def start_requests(self):
         yield SplashRequest(
-            args={ 'lua_source': LUA_INFINITE_NAVIGATION_SCROLL_SCRIPT },
-            endpoint='execute',
-            url='https://www.udemy.com/courses/development/data-science/',
+            args={ "lua_source": LUA_INFINITE_NAVIGATION_SCROLL_SCRIPT },
+            endpoint="execute",
+            url="https://www.udemy.com/courses/development/data-science/",
             callback=self.parse
         )
 
     def parse(self, response):
         self.logger.info(f"[scrapy.UdemySpider] Parsing resourse URL: '{response.url}'.")
 
-        for course in response.css('.course-list--container--3zXPS .popper--popper--2r2To'):
+        for course in response.css(".course-list--container--3zXPS .popper--popper--2r2To"):
             cb_kwargs = {
-                'level': course.css("div.course-card--course-meta-info--2jTzN > span:nth-child(3)::text").get(),
-                'duration': course.css("div.course-card--course-meta-info--2jTzN > span:nth-child(1)::text").get(),
-                'free': course.css("div[data-purpose=course-price-text] > span:nth-child(2)::text").get() == "Free"
+                "level": course.css("div.course-card--course-meta-info--2jTzN > span:nth-child(3)::text").get(),
+                "duration": course.css("div.course-card--course-meta-info--2jTzN > span:nth-child(1)::text").get(),
+                "free": course.css("div[data-purpose=course-price-text] > span:nth-child(2)::text").get() == "Free"
             }
 
             self.logger.info(f"[scrapy.UdemySpider] Parsing page 'https://www.udemy.com/{course.css('a::attr(href)').get()}'.")
 
             yield SplashRequest(
                 args={
-                    'lua_source': LUA_PAGE_SCROLL_SCRIPT
+                    "lua_source": LUA_PAGE_SCROLL_SCRIPT
                 },
-                endpoint='execute',
+                endpoint="execute",
                 url=f'https://www.udemy.com{course.css("a::attr(href)").get()}',
                 callback=self.parse_page,
                 cb_kwargs=cb_kwargs
@@ -88,9 +88,9 @@ class UdemySpider(scrapy.Spider):
             next_page_url = response.css("a.pagination--next--164ol::attr(href)").get()
 
             yield SplashRequest(
-                args={ 'lua_source': LUA_INFINITE_NAVIGATION_SCROLL_SCRIPT },
-                endpoint='execute',
-                url=f'https://www.udemy.com{str(next_page_url)}',
+                args={ "lua_source": LUA_INFINITE_NAVIGATION_SCROLL_SCRIPT },
+                endpoint="execute",
+                url=f"https://www.udemy.com{str(next_page_url)}",
                 callback=self.parse
             )
 
@@ -98,16 +98,16 @@ class UdemySpider(scrapy.Spider):
         self.logger.info(f"[scrapy.UdemySpider] Parsing resourse URL: '{response.url}'.")
 
         yield {
-            'title': response.css("h1.udlite-heading-xl::text").get(),
-            'description': response.css("div[data-purpose=lead-headline]::text").get(),
-            'authors': response.css("a.udlite-instructor-links span::text").getall(),
-            'rating': response.css("span[data-purpose=rating-number]::text").get(),
-            'votes_count': response.css(".styles--rating-wrapper--5a0Tr > span:nth-child(2)::text").get(),
-            'students_count': response.css(".clp-lead__element-item--row > div:nth-child(2) > "
+            "title": response.css("h1.udlite-heading-xl::text").get(),
+            "description": response.css("div[data-purpose=lead-headline]::text").get(),
+            "authors": response.css("a.udlite-instructor-links span::text").getall(),
+            "rating": response.css("span[data-purpose=rating-number]::text").get(),
+            "votes_count": response.css(".styles--rating-wrapper--5a0Tr > span:nth-child(2)::text").get(),
+            "students_count": response.css(".clp-lead__element-item--row > div:nth-child(2) > "
                                             "div:nth-child(1)::text").get(),
-            'level': kwargs['level'],
-            'duration': kwargs['duration'],
-            'platform': 'Udemy',
-            'free': kwargs['free']
+            "level": kwargs["level"],
+            "duration": kwargs["duration"],
+            "platform": "Udemy",
+            "free": kwargs["free"]
         }
 

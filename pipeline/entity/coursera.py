@@ -20,9 +20,9 @@ def process_student_field(val: str) -> int:
     base = float(val[:-1])
     exponent = val[-1]
 
-    if exponent == 'm':
+    if exponent == "m":
         return int(base * 1_000_000)
-    elif exponent == 'k':
+    elif exponent == "k":
         return int(base * 1_000)
     else:
         return int(base)
@@ -51,7 +51,7 @@ def process_votes_field(val: str) -> int:
         int: Parsed votes number.
     """
 
-    return int(val[1:-1].replace(',', ''))
+    return int(val[1:-1].replace(",", ""))
 
 
 def process_duration_field(val: str) -> float | None:
@@ -67,7 +67,7 @@ def process_duration_field(val: str) -> float | None:
     if "Approx" in val:
         return None
 
-    weeks_and_hours = re.findall(r'\d+', val)
+    weeks_and_hours = re.findall(r"\d+", val)
     hours_of_weeks = 4.0 * 24.0 * float(weeks_and_hours[0])
     hours = float(weeks_and_hours[1])
 

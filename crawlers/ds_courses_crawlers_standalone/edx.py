@@ -23,7 +23,7 @@ def main():
 
     args = parser.parse_args()
 
-    df_columns = ['title', 'description', 'authors', 'rating', 'votes_count', 'students_count', 'level', 'duration', 'platform', 'free']
+    df_columns = ["title", "description", "authors", "rating", "votes_count", "students_count", "level", "duration", "platform", "free"]
     df = pd.DataFrame(columns=df_columns)
 
     pages_url_queue = queue.Queue()
@@ -32,7 +32,7 @@ def main():
     logger.setLevel(logging.INFO)
     logger.addHandler(logging.StreamHandler(sys.stdout))
 
-    driver_binary_location = os.environ.get('CHROME_DRIVER')
+    driver_binary_location = os.environ.get("CHROME_DRIVER")
 
     if driver_binary_location is None:
         logger.error("[Driver] Driver binary location is not defined. Set driver binary path in `CHROME_DRIVER`.")
@@ -50,8 +50,8 @@ def main():
             card_grid_selector = EC.presence_of_element_located((By.CSS_SELECTOR, "div.pgn__card-grid"))
             card_grid = WebDriverWait(driver, REQUEST_TIMEOUT).until(card_grid_selector)
 
-            for card in card_grid.find_elements(By.CSS_SELECTOR, 'a.discovery-card-link'):
-                url = card.get_attribute('href')
+            for card in card_grid.find_elements(By.CSS_SELECTOR, "a.discovery-card-link"):
+                url = card.get_attribute("href")
 
                 logger.info(f"[Driver] Page '{url}' put into a queue.")
                 pages_url_queue.put(url)
@@ -73,16 +73,16 @@ def main():
         driver.get(str(pages_url_queue.get()))
 
         record = {
-            'title': safe_query_text(driver, '.col-md-7 > h1:nth-child(1)'),
-            'description': safe_query_text(driver, '.col-md-7 > div:nth-child(2) > p:nth-child(1)'),
-            'authors': [safe_query_text(driver, 'div.col-md-6:nth-child(1) > ul:nth-child(1) > li:nth-child(1)')],
-            'rating': None,
-            'votes_count': None,
-            'students_count': safe_query_text(driver, '#enroll > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)'),
-            'level': safe_query_text(driver, 'div.col-md-6:nth-child(1) > ul:nth-child(1) > li:nth-child(3)'),
-            'duration': safe_query_text(driver, '.pb-4 > div:nth-child(2)'),
-            'platform': 'edX',
-            'free': safe_query_text(driver, 'div.col-12:nth-child(3) > div:nth-child(2) > div:nth-child(1)') == "Free"
+            "title": safe_query_text(driver, ".col-md-7 > h1:nth-child(1)"),
+            "description": safe_query_text(driver, ".col-md-7 > div:nth-child(2) > p:nth-child(1)"),
+            "authors": [safe_query_text(driver, "div.col-md-6:nth-child(1) > ul:nth-child(1) > li:nth-child(1)")],
+            "rating": None,
+            "votes_count": None,
+            "students_count": safe_query_text(driver, "#enroll > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)"),
+            "level": safe_query_text(driver, "div.col-md-6:nth-child(1) > ul:nth-child(1) > li:nth-child(3)"),
+            "duration": safe_query_text(driver, ".pb-4 > div:nth-child(2)"),
+            "platform": "edX",
+            "free": safe_query_text(driver, "div.col-12:nth-child(3) > div:nth-child(2) > div:nth-child(1)") == "Free"
         }
 
         logger.info(f"[Driver] Writing new record: {record}.")

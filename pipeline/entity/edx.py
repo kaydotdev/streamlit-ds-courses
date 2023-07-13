@@ -38,7 +38,7 @@ def process_student_field(val: str) -> int | None:
     if val is None:
         return None
 
-    student_num_parsed = re.findall(r'\d+', val)
+    student_num_parsed = re.findall(r"\d+", val)
 
     if len(student_num_parsed) == 0:
         return None
@@ -74,16 +74,16 @@ def process_duration_field(val: str) -> float:
         float: Parsed duration value.
     """
 
-    if '\n' in val:
-        weeks_and_hours = val.split('\n')
+    if "\n" in val:
+        weeks_and_hours = val.split("\n")
         weeks, hours = weeks_and_hours[0], weeks_and_hours[1]
 
-        weeks_parsed = int(re.findall(r'\d+', weeks)[0])
-        hours_parsed = np.sum([float(int(n)) for n in re.findall(r'\d+', hours)]) / 2.0
+        weeks_parsed = int(re.findall(r"\d+", weeks)[0])
+        hours_parsed = np.sum([float(int(n)) for n in re.findall(r"\d+", hours)]) / 2.0
 
         return weeks_parsed * 4.0 + hours_parsed
     else:
-        return int(re.findall(r'\d+', val)[0]) * 1.0
+        return int(re.findall(r"\d+", val)[0]) * 1.0
 
 
 process_author_field_udf = udf(lambda x: process_author_field(x), StringType())
