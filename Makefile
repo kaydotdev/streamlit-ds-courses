@@ -32,14 +32,14 @@ serve:
 	streamlit run Introduction.py
 
 .PHONY: clean
-# Remove all generates files
+# Remove all processing artifacts, build files and cache files
 clean:
-	rm -f data/*
+	rm -f data/* poetry.lock
+	rm -rf .ruff_cache/ .pytest_cache/
+	find . -type d -name '__pycache__' -exec rm -rf {} +
 
 .PHONY: pipeline
-# Run data processing pipelines
+# Run data processing pipeline for webcrawler output
 pipeline:
-	rm -f data/dataframe.csv
 	python pipeline/run.py
-	rm -rf data/intr/
 
