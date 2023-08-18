@@ -16,21 +16,19 @@ from .common import REQUEST_TIMEOUT, safe_query_attribute, safe_query_text
 PAGES_NUMBER = 2
 DOWNLOAD_DELAY = 1.0
 
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler(sys.stdout))
+
 
 def main():
     parser = argparse.ArgumentParser(description="Processing pipeline for raw scraped data.")
-    parser.add_argument("--output", type=str, default="../../data/alison.json", help="File path to the webcrawling results.")
+    parser.add_argument("--output", type=str, default="alison.json", help="File path to the webcrawling results.")
 
     args = parser.parse_args()
 
-    df_columns = ["title", "description", "authors", "rating", "votes_count", "students_count", "level", "duration", "platform", "free"]
-    df = pd.DataFrame(columns=df_columns)
-
+    df = pd.DataFrame(columns=["title", "description", "authors", "rating", "votes_count", "students_count", "level", "duration", "platform", "free"])
     requests_queue = queue.Queue()
-
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-    logger.addHandler(logging.StreamHandler(sys.stdout))
 
     driver_binary_location = os.environ.get("CHROME_DRIVER")
 
@@ -43,7 +41,6 @@ def main():
     driver = webdriver.Chrome(options=driver_options)
 
     logger.info("[Driver] WebDriver is ready.")
-
 
     for page_id in range(PAGES_NUMBER):
         driver.get(f"https://alison.com/tag/data-science?page={page_id+1}")
@@ -64,7 +61,6 @@ def main():
             break
 
     logger.info(f"[Queue] Total collected requests: {requests_queue.qsize()}.")
-
 
     while not requests_queue.empty():
         driver.get(requests_queue.get())
@@ -87,7 +83,6 @@ def main():
 
         logger.info(f"[Queue] Recording entity: {record}.")
         df = df.append(record, ignore_index=True)
-
 
     df.to_json(args.output, orient="records")
 

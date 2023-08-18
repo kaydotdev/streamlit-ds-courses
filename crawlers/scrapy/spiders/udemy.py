@@ -1,5 +1,6 @@
-import scrapy
 from scrapy_splash import SplashRequest
+
+import scrapy
 
 LUA_INFINITE_NAVIGATION_SCROLL_SCRIPT = """
     function main(splash)

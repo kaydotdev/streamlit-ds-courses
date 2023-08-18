@@ -16,21 +16,19 @@ from .common import REQUEST_TIMEOUT, safe_query_text
 PAGES_NUMBER = 14
 DOWNLOAD_DELAY = 1.0
 
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler(sys.stdout))
+
 
 def main():
     parser = argparse.ArgumentParser(description="Processing pipeline for raw scraped data.")
-    parser.add_argument("--output", type=str, default="../../data/edx.json", help="File path to the webcrawling results.")
+    parser.add_argument("--output", type=str, default="edx.json", help="File path to the webcrawling results.")
 
     args = parser.parse_args()
 
-    df_columns = ["title", "description", "authors", "rating", "votes_count", "students_count", "level", "duration", "platform", "free"]
-    df = pd.DataFrame(columns=df_columns)
-
+    df = pd.DataFrame(columns=["title", "description", "authors", "rating", "votes_count", "students_count", "level", "duration", "platform", "free"])
     pages_url_queue = queue.Queue()
-
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
-    logger.addHandler(logging.StreamHandler(sys.stdout))
 
     driver_binary_location = os.environ.get("CHROME_DRIVER")
 
@@ -89,5 +87,10 @@ def main():
         df = df.append(record, ignore_index=True)
 
     df.to_json(args.output, orient="records")
+
     driver.close()
+
+
+if __name__ == "__main__":
+    main()
 
