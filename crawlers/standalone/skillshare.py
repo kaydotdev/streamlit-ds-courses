@@ -17,7 +17,7 @@ logger.addHandler(logging.StreamHandler(sys.stdout))
 
 def main():
     parser = argparse.ArgumentParser(description="Processing pipeline for raw scraped data.")
-    parser.add_argument("--output", type=str, default="skillshare.json", help="File path to the webcrawling results.")
+    parser.add_argument("--output", type=str, default=".data/skillshare.json", help="File path to the webcrawling results.")
 
     args = parser.parse_args()
 

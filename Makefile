@@ -37,6 +37,7 @@ clean: clean-data
 	rm -f poetry.lock
 	rm -rf .ruff_cache/ .pytest_cache/
 	find . -type d -name '__pycache__' -exec rm -rf {} +
+	find . -type d -name '.data' -exec rm -rf {} +
 
 .PHONY: clean-data
 # Remove previously collected dataframe
@@ -47,4 +48,26 @@ clean-data:
 # Run data processing pipeline for webcrawler output
 pipeline:
 	poetry run python pipeline/run.py
+
+.PHONY: collect
+# Collect data from both web and standalone crawlers
+# Before running set `CHROME_DRIVER` environment variable for standalone webcrawls
+collect:
+	cd crawlers/scrapy; for platform in futurelearn skillshare udemy; do \
+		poetry run scrapy crawl "$platform" -o ".data/$platform.json" \
+	done
+
+	if [[ ! -d "data/.data" ]]; then \
+		mkdir -p "data/.data"
+	fi
+
+	mv "crawlers/scrapy/.data/*" "data/.data/*" 
+	rm -rf "crawlers/scrapy/.data"
+
+	for platform in alison coursera edx pluralsight skillshare; do \
+		poetry run python -m "crawlers.standalone.$platform" \
+	done
+
+	mv "crawlers/standalone/.data/*" "data/.data/*" 
+	rm -rf "crawlers/standalone/.data"
 
