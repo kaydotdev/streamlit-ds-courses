@@ -10,7 +10,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from .common import WebDriverContextManager, REQUEST_TIMEOUT, safe_query_attribute, safe_query_text
+from .common import (
+    REQUEST_TIMEOUT,
+    WebDriverContextManager,
+    safe_query_attribute,
+    safe_query_text,
+)
 
 PAGES_NUMBER = 2
 DOWNLOAD_DELAY = 1.0

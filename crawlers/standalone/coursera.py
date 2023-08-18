@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from .common import WebDriverContextManager, safe_query_text, safe_query_attribute
+from .common import WebDriverContextManager, safe_query_attribute, safe_query_text
 
 PAGES_NUMBER = 100
 DOWNLOAD_DELAY = 1.0

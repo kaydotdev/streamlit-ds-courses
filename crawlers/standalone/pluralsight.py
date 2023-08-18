@@ -10,7 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from .common import WebDriverContextManager, REQUEST_TIMEOUT, safe_query_text
+from .common import REQUEST_TIMEOUT, WebDriverContextManager, safe_query_text
 
 DOWNLOAD_DELAY = 5.0
 
@@ -20,7 +20,7 @@ logger.addHandler(logging.StreamHandler(sys.stdout))
 
 
 def parse_rating(driver):
-    star_elements = driver.find_elements(By.CSS_SELECTOR, '#course-page-description i')
+    star_elements = driver.find_elements(By.CSS_SELECTOR, "#course-page-description i")
     return ";".join([star.get_attribute("class") for star in star_elements])
 
 
@@ -48,8 +48,8 @@ def main():
         while next_page_available:
             scroll_anchor = WebDriverWait(driver, REQUEST_TIMEOUT).until(EC.presence_of_element_located((By.CSS_SELECTOR, "#search-results")))
 
-            for card in scroll_anchor.find_elements(By.CSS_SELECTOR, 'div.search-result a.cludo-result'):
-                url = card.get_attribute('href')
+            for card in scroll_anchor.find_elements(By.CSS_SELECTOR, "div.search-result a.cludo-result"):
+                url = card.get_attribute("href")
                 logger.info(f"[Queue] Recording entity: {url}")
                 pages_url_queue.put(url)
 
@@ -63,16 +63,16 @@ def main():
             time.sleep(DOWNLOAD_DELAY)
 
             record = {
-                'title': safe_query_text(driver, '#course-page-hero div.title.section h1'),
-                'description': safe_query_text(driver, '.text-component'),
-                'authors': [safe_query_text(driver, '.title--alternate > a:nth-child(3)')],
-                'rating': parse_rating(driver),
-                'votes_count': safe_query_text(driver, '.course-sidebar > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > span:nth-child(6)'),
-                'students_count': None,
-                'level': safe_query_text(driver, '.course-sidebar div.difficulty-level'),
-                'duration': safe_query_text(driver, '.course-sidebar > div:nth-child(1) > div:last-child > div:nth-child(2)'),
-                'platform': 'Pluralsight',
-                'free': False,
+                "title": safe_query_text(driver, "#course-page-hero div.title.section h1"),
+                "description": safe_query_text(driver, ".text-component"),
+                "authors": [safe_query_text(driver, ".title--alternate > a:nth-child(3)")],
+                "rating": parse_rating(driver),
+                "votes_count": safe_query_text(driver, ".course-sidebar > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) > span:nth-child(6)"),
+                "students_count": None,
+                "level": safe_query_text(driver, ".course-sidebar div.difficulty-level"),
+                "duration": safe_query_text(driver, ".course-sidebar > div:nth-child(1) > div:last-child > div:nth-child(2)"),
+                "platform": "Pluralsight",
+                "free": False,
             }
 
             logger.info(f"[Queue] Recording entity: {record}")
