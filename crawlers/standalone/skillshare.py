@@ -4,10 +4,9 @@ import os
 import sys
 
 import pandas as pd
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-from .common import safe_query_text
+from .common import WebDriverContextManager, safe_query_text
 
 DOWNLOAD_DELAY = 5.0
 
@@ -31,27 +30,19 @@ def main():
         logger.error("[Driver] Driver binary location is not defined. Set driver binary path in `CHROME_DRIVER`.")
         sys.exit(1)
 
-    driver_options = webdriver.ChromeOptions()
-    driver_options.binary_location = driver_binary_location
-    driver = webdriver.Chrome(options=driver_options)
-
-    logger.info("[Driver] WebDriver is ready.")
-
     for _, row in df_meta.iterrows():
-        driver = webdriver.Chrome(options=driver_options)
+        with WebDriverContextManager(binary_location=driver_binary_location) as driver:
+            logger.info("[Driver] WebDriver is ready.")
 
-        logger.info("[Driver] WebDriver is ready.")
+            row_data = row.to_dict(dict)
+            url = row_data.pop("url", None)
 
-        row_data = row.to_dict(dict)
-        url = row_data.pop("url", None)
+            if url is None:
+                continue
 
-        if url is None:
-            continue
+            driver.get(url)
+            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
-        driver.get(url)
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-        try:
             rating_elements = driver.find_elements(By.CSS_SELECTOR, ".tile.expectations.metric li")
             percentage_elements = driver.find_elements(By.CSS_SELECTOR, ".tile.expectations.metric li .percentage")
 
@@ -65,14 +56,8 @@ def main():
 
             logger.info(f"[Queue] Recording entity: {record}")
             df = df.append(record, ignore_index=True)
-        except Exception as ex:
-            logger.error(f"[ERROR] {ex}.")
-        finally:
-            logger.info("[Driver] Closing driver.")
 
-            driver.close()
-
-    df.to_json(args.output, orient="records")
+        df.to_json(args.output, orient="records")
 
 
 if __name__ == "__main__":
