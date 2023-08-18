@@ -14,32 +14,37 @@ min-dep:
 .PHONY: lint
 # Verify proper formatting for Python files
 lint:
-	ruff check .
+	poetry run ruff check .
 
 .PHONY: format
 # Automatic fix linting erros for all Python files
 format:
-	ruff check --fix .
+	poetry run ruff check --fix .
 
 .PHONY: test
 # Run all project test suites
 test:
-	pytest test/
+	poetry run pytest test/
 
 .PHONY: serve
 # Launch a Streamlit dashboard server
 serve:
-	streamlit run Introduction.py
+	poetry run streamlit run Introduction.py
 
 .PHONY: clean
 # Remove all processing artifacts, build files and cache files
-clean:
-	rm -f data/* poetry.lock
+clean: clean-data
+	rm -f poetry.lock
 	rm -rf .ruff_cache/ .pytest_cache/
 	find . -type d -name '__pycache__' -exec rm -rf {} +
+
+.PHONY: clean-data
+# Remove previously collected dataframe
+clean-data:
+	rm -f data/dataframe.csv
 
 .PHONY: pipeline
 # Run data processing pipeline for webcrawler output
 pipeline:
-	python pipeline/run.py
+	poetry run python pipeline/run.py
 
