@@ -21,3 +21,36 @@ Data was collected via web scraping from popular online platforms: [Coursera](ht
 
 The primary intent behind collecting courses data is to discover which online platform provides the highest educational quality. Also, further analysis should reveal answers like "Does a paid course provide higher quality than a free one?" or "Which platform is the most suitable for beginners?".
 
+
+## Structure
+
+ - [Web crawlers](./crawlers)
+    - [Scrapy crawlers](./crawlers/scrapy)
+    - [Selenium crawlers](./crawlers/standalone)
+ - [On-demand dataframe](./data)
+ - [EDA notebooks](./data)
+ - [Data processing pipelines](./pipeline)
+ - [Test suites](./test)
+ - [Common utility scripts](./util)
+
+
+## Getting started
+
+Before setting up the environment, ensure you have `Make` installed on your local machine. To install the packages required for the Streamlit dashboard, use the following command:
+
+```bash
+make min-dep
+```
+
+If you prefer a virtual environment setup, use `requirements.txt`. You can set up extra dependencies for development, testing, data collection, and processing with the command:
+
+```bash
+make all-dep
+```
+
+To run a Streamlit server, use the command:
+
+```bash
+make serve
+```
+

@@ -1,5 +1,4 @@
 # Makefile uses `/bin/bash` shell by default
-# Before running Makefile, activate virtual environment with `poetry shell`
 
 .PHONY: all-dep
 # Installing dependencies for development, processing and dashboard
