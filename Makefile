@@ -13,22 +13,26 @@ min-dep:
 .PHONY: lint
 # Verify proper formatting for Python files
 lint:
-	poetry run ruff check .
+	ruff check .
 
 .PHONY: format
 # Automatic fix linting erros for all Python files
 format:
-	poetry run ruff check --fix .
+	ruff check --fix .
 
 .PHONY: test
 # Run all project test suites
 test:
-	poetry run pytest test/
+	pytest test/
+
+.PHONY: ci
+# Run all continuous integration checks
+ci: lint test
 
 .PHONY: serve
 # Launch a Streamlit dashboard server
 serve:
-	poetry run streamlit run Introduction.py
+	streamlit run Introduction.py
 
 .PHONY: clean
 # Remove all processing artifacts, build files and cache files
@@ -46,14 +50,14 @@ clean-data:
 .PHONY: pipeline
 # Run data processing pipeline for webcrawler output
 pipeline:
-	poetry run python pipeline/run.py
+	python pipeline/run.py
 
 .PHONY: collect
 # Collect data from both web and standalone crawlers
 # Before running set `CHROME_DRIVER` environment variable for standalone webcrawls
 collect:
 	cd crawlers/scrapy; for platform in futurelearn skillshare udemy; do \
-		poetry run scrapy crawl "$platform" -o ".data/$platform.json" \
+		scrapy crawl "$platform" -o ".data/$platform.json" \
 	done
 
 	if [[ ! -d "data/.data" ]]; then \
@@ -64,7 +68,7 @@ collect:
 	rm -rf "crawlers/scrapy/.data"
 
 	for platform in alison coursera edx pluralsight skillshare; do \
-		poetry run python -m "crawlers.standalone.$platform" \
+		python -m "crawlers.standalone.$platform" \
 	done
 
 	mv "crawlers/standalone/.data/*" "data/.data/*" 
