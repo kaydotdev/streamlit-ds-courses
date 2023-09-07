@@ -1,0 +1,18 @@
+[server]
+
+# If false, will attempt to open a browser window on start.
+headless = true
+
+# Enables support for Cross-Origin Resource Sharing (CORS) protection, for
+# added security.
+enableCORS = true
+
+# The port where the server will listen for browser connections.
+port = 8080
+
+
+[browser]
+
+# Whether to send usage statistics to Streamlit.
+gatherUsageStats = true
+
