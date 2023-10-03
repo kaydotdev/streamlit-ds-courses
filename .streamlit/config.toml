@@ -14,5 +14,5 @@ port = 8080
 [browser]
 
 # Whether to send usage statistics to Streamlit.
-gatherUsageStats = true
+gatherUsageStats = false
 
