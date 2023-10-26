@@ -6,6 +6,9 @@
 
 All source code for [Data Science Courses](https://www.kaggle.com/antonkozyriev/online-data-science-courses) project on Kaggle platform including webcrawlers, preprocessing pipelines and EDA notebooks.
 
+### Demo
+
+https://github.com/antonAce/streamlit-ds-courses/assets/22917736/20a67c57-a848-4b4e-a20f-9f0ce4f673dc
 
 ### Context
 
