@@ -7,9 +7,6 @@ headless = true
 # added security.
 enableCORS = true
 
-# The port where the server will listen for browser connections.
-port = 8080
-
 
 [browser]
 
